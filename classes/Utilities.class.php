@@ -10,7 +10,6 @@ class Utilities {
 	public static $ipBlacklists = array();
 	public static $hostNotCheckedMessage = '1ST CHECK SCHEDULED';
 	public static $frequencyCheckOptions = array('1hour', '2hour', '8hour', 'daily', 'weekly');
-	public static $memcached = false;
 	public static $mysql = false;
 
 	public static function setBlockLists($resetCache = false){
@@ -326,7 +325,7 @@ class Utilities {
 		select username
 		from users
 		where ";
-		if($apiKey != ''){
+		if(trim($apiKey) != ''){
 			$sql .= " apiKey = '".$mysql->escape($apiKey)."'";
 		}else{
 			$sql .= " passwd = '".$mysql->escape(md5($passwd))."' 

@@ -23,7 +23,6 @@ class_exists('Utilities', false) or include('classes/Utilities.class.php');
 		<div class="header">
 			<ul class="nav nav-pills pull-right">
 			<?php $pageName = basename($_SERVER['PHP_SELF']);?>
-				<li <?php if($pageName=='index.php') echo('class="active"');?>><a href="/">Lookup</a></li>
 			<?php
 			if(Utilities::isLoggedIn()!==false){
 			?>
@@ -32,7 +31,7 @@ class_exists('Utilities', false) or include('classes/Utilities.class.php');
 			<?php
 			}else{
 			?>
-				<li <?php if($pageName=='login.php') echo('class="active"');?>><a href="login.php">Login</a><li>
+				<li <?php if($pageName=='login.php' || $pageName=='index.php' ) echo('class="active"');?>><a href="login.php">Login</a><li>
 			<?php
 			}
 			?>

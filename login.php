@@ -18,6 +18,11 @@ if($logout==1){
 	exit();
 }
 
+if(Utilities::isLoggedIn()!==false){
+	header('Location: account.php');
+	exit();
+}
+
 if(isset($_POST["submit"])){
 	$id = Utilities::validateLogin($username, $passwd);
 	if($id != 0){
