@@ -22,7 +22,7 @@ foreach($results as $result){
 	$body .= "<td>".htmlentities($result['host'])."</td>";
 	$body .= "<td nowrap>";
 	if($result['isBlocked']==0){
-		$body .= "OK";	
+		$body .= "OK";
 	}else{
 		foreach($result['status'] as $r){
 			if($r[1] == false || $r[1] == ''){
