@@ -1,12 +1,12 @@
 <?php
-$apiKey = 'bcf66a12724bcbf8bf15b3fd4a06e6c8';
+$apiKey = 'API-KEY-GOES-HERE';
 
 $requestBody =
 	"apiKey=".urlencode($apiKey).
 	"&type=blacklistStatus".
 	"&data=all";
 
-$return = httpPost('https://www.freeblacklistmonitor.com/api.php', $requestBody);
+$return = httpPost('url/api.php', $requestBody);
 $return = json_decode($return, true);
 $results = $return['result'];
 
