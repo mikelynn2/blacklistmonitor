@@ -8,7 +8,7 @@ Application for monitoring Domains and IPs on RBLs.
 - [MySQL](http://www.MySQL.org) or [MariaDB](https://mariadb.org/) are needed for the database.
 - Most likely you'll need your own DNS server as well.  You can use [Bind](https://www.isc.org/downloads/bind/) or even [unbound](https://www.unbound.net/).  Bind is easier, unbound may be faster.
 - Apache or Nginx
-
+- SMTP Mail server
 
 ## Installation (Ubuntu/mariadb/bind/apache)
 ```
@@ -65,6 +65,12 @@ restart blacklistmonitor
 
 ### Website
 The default username and password to the portal is admin/pa55w0rd
+
+### Timezone Setup
+```
+dpkg-reconfigure tzdata
+```
+Then edit your the value for date.timezone in /etc/php5/apache2/php.ini
 
 
 Watch your log for issues/performance
