@@ -66,6 +66,12 @@ restart blacklistmonitor
 ### Website
 The default username and password to the portal is admin/pa55w0rd
 
+### Timezone Setup
+```
+dpkg-reconfigure tzdata
+```
+Then edit your the value for date.timezone in /etc/php5/apache2/php.ini
+
 
 Watch your log for issues/performance
 ```
