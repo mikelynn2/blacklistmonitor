@@ -12,11 +12,11 @@ Application for monitoring Domains and IPs on RBLs.
 
 ## Installation (Ubuntu)
 ```
-$ apt-get -y install apache2
-$ apt-get -y install mariadb-server mariadb-client mariadb-common
-$ apt-get -y install php5 php5-mysqlnd php5-cli php5-curl
-$ update-rc.d apache2 defaults
-$ update-rc.d mysql defaults
+apt-get -y install apache2
+apt-get -y install mariadb-server mariadb-client mariadb-common
+apt-get -y install php5 php5-mysqlnd php5-cli php5-curl
+update-rc.d apache2 defaults
+update-rc.d mysql defaults
 ```
 
 Go into the directory you want to install BlacklistMonitor into and clone the git repo.  Usually this would be a web server directory like /var/www/html/.  The rest of the commands below assume you're using this dir and the default config files do as well.
