@@ -7,7 +7,7 @@ if(Utilities::isLoggedIn()===false){
 	header('Location: login.php?location='.urlencode('hosts.php'));
 	exit();
 }
-$blockListId = array_key_exists('blockListId', $_POST) ? (int)$_POST['blockListId'] : 0;
+$host = array_key_exists('host', $_POST) ? $_POST['host'] : '';
 $toggle = array_key_exists('toggle', $_POST) ? (int)$_POST['toggle'] : 0;
 
 $titlePreFix = "Hosts";
@@ -15,19 +15,18 @@ $titlePreFix = "Hosts";
 $user = Utilities::getAccount();
 $mysql = new _MySQL();
 $mysql->connect(Setup::$connectionArray);
-if($blockListId !== 0){
+if($host != ''){
 	if($toggle==0){
 		$mysql->runQuery("
 			update blockLists
 			set isActive = '0'
-			where blockListId = $blockListId");
+			where md5(host) = '".$mysql->escape($host)."'");
 	}else{
 		$mysql->runQuery("
 			update blockLists
 			set isActive = '1'
-			where blockListId = $blockListId");
+			where md5(host) = '".$mysql->escape($host)."'");
 	}
-	Utilities::setBlockLists(true);
 	exit();
 }
 
@@ -48,29 +47,29 @@ include('accountSubnav.inc.php');
 $(document).ready(function() {
 	$("#blockListTable").tablesorter();
 	$(".blockListLinks").click( function(event) {
-		var blockListId = $("#"+event.target.id).data("blocklistid");
-		toggleBlacklist(blockListId);
+		var host = $("#"+event.target.id).data("host");
+		toggleBlacklist(host);
 		return false;
 	});
 });
 
-function toggleBlacklist(blockListId){
-	var status = $("#bl-"+blockListId).data("blstatus");
+function toggleBlacklist(host){
+	var status = $("#"+host).data("blstatus");
 	if(status == 1) {
 		status = 0;
 	}else{
 		status = 1;
 	}
-	$.post("blockLists.php", {blockListId: blockListId, toggle: status} )
+	$.post("blockLists.php", {host: host, toggle: status} )
 		.done(function( data ) {
 			if(status==1){
-				$("#bl-"+blockListId).removeClass('glyphicon-remove');
-				$("#bl-"+blockListId).addClass('glyphicon-ok');
+				$("#"+host).removeClass('glyphicon-remove');
+				$("#"+host).addClass('glyphicon-ok');
 			}else{
-				$("#bl-"+blockListId).removeClass('glyphicon-ok');
-				$("#bl-"+blockListId).addClass('glyphicon-remove');
+				$("#"+host).removeClass('glyphicon-ok');
+				$("#"+host).addClass('glyphicon-remove');
 			}
-			$("#bl-"+blockListId).data("blstatus", status);
+			$("#"+host).data("blstatus", status);
 		});
 }
 </script>
@@ -99,9 +98,9 @@ function toggleBlacklist(blockListId){
 			echo('<tr>');
 			echo('<td style="text-align: center;">');
 			if($row['isActive']==0){
-				echo('<a data-blstatus="0" data-blocklistid="'.$row['blockListId'].'" id="bl-'.$row['blockListId'].'" class="blockListLinks glyphicon glyphicon-remove" href="#"></a></td>');
+				echo('<a data-blstatus="0" data-host="'.md5($row['host']).'" id="'.md5($row['host']).'" class="blockListLinks glyphicon glyphicon-remove" href="#"></a></td>');
 			}else{
-				echo('<a data-blstatus="1" data-blocklistid="'.$row['blockListId'].'" id="bl-'.$row['blockListId'].'" class="blockListLinks glyphicon glyphicon-ok" href="#"></a></td>');
+				echo('<a data-blstatus="1" data-host="'.md5($row['host']).'" id="'.md5($row['host']).'" class="blockListLinks glyphicon glyphicon-ok" href="#"></a></td>');
 			}
 			echo('<td style="white-space: nowrap"><a target="_blank" href="'.$row['website'].'">'.$row['host'].'</a></td>');
 			echo('<td style="white-space: nowrap">'.($row['monitorType']=='ip' ? 'IP' : 'Domain').'</td>');
