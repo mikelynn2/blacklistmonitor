@@ -104,7 +104,7 @@ if($hostsChanged > 0 && $user['disableEmailNotices']==0){
 	$footer = "<br/><div><a href='$url/account.php'>Manage your account</a></div>";
 
 	$e = explode("\n",$user['noticeEmailAddresses']);
-	if(count($e) > 0){
+	if( (count($e) > 0) && (Setup::$settings['smtp_server']!='') ){
 		// regular email
 		$mail = new PHPMailer();
 		$mail->IsSMTP();
@@ -128,7 +128,7 @@ if($hostsChanged > 0 && $user['disableEmailNotices']==0){
 	
 	// text message
 	$e = explode("\n",$user['textMessageEmails']);
-	if(count($e) > 0){
+	if( (count($e) > 0) && (Setup::$settings['smtp_server']!='') ){
 		$mail = new PHPMailer();
 		$mail->IsSMTP();
 		try{
