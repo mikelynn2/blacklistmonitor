@@ -11,6 +11,7 @@ class Setup {
 
 		if(self::$instance===null){
 
+			if(!file_exists('/etc/blacklistmonitor.cfg')) echo('no config file in /etc/blacklistmonitor.cfg');
 			ini_set('error_reporting', E_ALL | E_STRICT | E_NOTICE);
 			$cfg = parse_ini_file('/etc/blacklistmonitor.cfg', false);
 			ini_set('display_errors', $cfg['display_errors']);
