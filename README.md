@@ -8,7 +8,7 @@ Application for monitoring Domains and IPs on RBLs.
 - [MySQL](http://www.MySQL.org) or [MariaDB](https://mariadb.org/) are needed for the database.
 - Most likely you'll need your own DNS server as well.  You can use [Bind](https://www.isc.org/downloads/bind/) or even [unbound](https://www.unbound.net/).  Bind is easier, unbound may be faster.
 - Apache or Nginx
-
+- SMTP Mail server
 
 ## Installation (Ubuntu/mariadb/bind/apache)
 ```
