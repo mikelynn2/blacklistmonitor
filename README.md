@@ -14,7 +14,7 @@ Application for monitoring Domains and IPs on RBLs.
 ```
 $ apt-get -y install apache2
 $ apt-get -y install mariadb-server mariadb-client mariadb-common
-$ apt-get -y install php5 php5-mysqlnd php5-cli
+$ apt-get -y install php5 php5-mysqlnd php5-cli php5-curl
 $ update-rc.d apache2 defaults
 $ update-rc.d mysql defaults
 ```
