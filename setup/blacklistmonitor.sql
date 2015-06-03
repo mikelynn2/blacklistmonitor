@@ -168,12 +168,3 @@ ALTER TABLE `monitors`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`username`);
 
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `blockLists`
---
-ALTER TABLE `blockLists`
-  MODIFY `blockListId` int(11) NOT NULL AUTO_INCREMENT;
