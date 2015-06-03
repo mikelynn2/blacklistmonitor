@@ -79,14 +79,6 @@ INSERT INTO `blockLists` (`host`, `monitorType`, `functionCall`, `description`, 
 ('zen.spamhaus.org', 'ip', 'rbl', 'Composite host block list of all spamhaus ips.', 'http://www.spamhaus.org/zen/', '0000-00-00 00:00:00', '3', '1', 0, 0, 0, 0);
 
 --
--- Indexes for table `blockLists`
---
-ALTER TABLE `blockLists`
-  ADD PRIMARY KEY (`host`),
-  ADD KEY `monitorType` (`monitorType`),
-  ADD KEY `isActive` (`isActive`);
-
---
 -- Table structure for table `monitorHistory`
 --
 
@@ -149,8 +141,7 @@ INSERT INTO `users` (`username`, `passwd`, `apiKey`, `lastUpdate`, `lastChecked`
 -- Indexes for table `blockLists`
 --
 ALTER TABLE `blockLists`
-  ADD PRIMARY KEY (`blockListId`),
-  ADD UNIQUE KEY `host` (`host`,`monitorType`),
+  ADD PRIMARY KEY (`host`),
   ADD KEY `monitorType` (`monitorType`),
   ADD KEY `isActive` (`isActive`);
 
