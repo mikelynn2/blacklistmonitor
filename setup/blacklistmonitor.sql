@@ -129,8 +129,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `noticeEmailAddresses` varchar(8000) NOT NULL,
   `textMessageEmails` varchar(8000) NOT NULL,
   `apiCallbackURL` varchar(2000) NOT NULL,
-  `ips` text NOT NULL,
-  `domains` text NOT NULL
+  `ips` LONGTEXT NOT NULL,
+  `domains` LONGTEXT NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
