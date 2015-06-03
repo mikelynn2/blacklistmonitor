@@ -102,10 +102,10 @@ class Utilities {
 	//		echo("$t</br>");
 			$text = shell_exec($t);
 			$test = Utilities::parseBetweenText(
-				$text, 
+				$text,
 				";; ANSWER SECTION:\n", 
-				"\n\n", 
-				false, 
+				"\n\n",
+				false,
 				false,
 				true);
 			$testArray = explode("\t", $test);
@@ -130,10 +130,10 @@ class Utilities {
 //		echo("$t</br>");
 		$text = shell_exec($t);
 		$test = Utilities::parseBetweenText(
-			$text, 
-			";; ANSWER SECTION:\n", 
-			"\n\n", 
-			false, 
+			$text,
+			";; ANSWER SECTION:\n",
+			"\n\n",
+			false,
 			false,
 			true);
 		$testArray = preg_split("/IN\s+A\s+/i", $test);
@@ -144,10 +144,10 @@ class Utilities {
 	//		echo("$t</br>");
 			$text = shell_exec($t);
 			$test2 = Utilities::parseBetweenText(
-				$text, 
-				";; ANSWER SECTION:\n", 
-				"\n\n", 
-				false, 
+				$text,
+				";; ANSWER SECTION:\n",
+				"\n\n",
+				false,
 				false,
 				true);
 			$testArray = preg_split("/IN\s+TXT\s+/i", $test2);
