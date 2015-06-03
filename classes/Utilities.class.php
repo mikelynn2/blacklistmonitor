@@ -85,8 +85,7 @@ class Utilities {
 	public static function domainCheck($domain, $server){
 		$server = trim($server);
 		$host = escapeshellarg("$domain.$server");
-//		$t = "dig @".self::randomDNSServer()." +time=2 $host";
-		$t = "dig +time=2 $host";
+		$t = "dig @".self::randomDNSServer()." +time=2 $host";
 //		echo("$t</br>");
 		$text = shell_exec($t);
 		$test = Utilities::parseBetweenText(
@@ -99,7 +98,7 @@ class Utilities {
 		$testArray = explode("\t", $test);
 		$test = end($testArray);
 		if(trim($test)!=''){
-			$t = "dig +time=2 $host txt";
+			$t = "dig @".self::randomDNSServer()." +time=2 $host txt";
 	//		echo("$t</br>");
 			$text = shell_exec($t);
 			$test = Utilities::parseBetweenText(
@@ -127,7 +126,7 @@ class Utilities {
 		$reverseIp = implode('.', array_reverse($parts));
 		$text = "";
 		$host = escapeshellarg("$reverseIp.$server");
-		$t = "dig +time=2 $host";
+		$t = "dig @".self::randomDNSServer()." +time=2 $host";
 //		echo("$t</br>");
 		$text = shell_exec($t);
 		$test = Utilities::parseBetweenText(
@@ -141,7 +140,7 @@ class Utilities {
 		$test = trim(end($testArray));
 		//		echo "<pre>$test</pre>\n";
 		if(trim($test)!=''){
-			$t = "dig +time=2 $host txt";
+			$t = "dig @".self::randomDNSServer()." +time=2 $host txt";
 	//		echo("$t</br>");
 			$text = shell_exec($t);
 			$test2 = Utilities::parseBetweenText(
