@@ -16,12 +16,13 @@ Work in progress
 
 
 ## Installation (Ubuntu)
+```
 $ apt-get -y install apache2
 $ apt-get -y install mariadb-server mariadb-client mariadb-common
 $ apt-get -y install php5 php5-mysqlnd php5-cli
-
 $ update-rc.d apache2 defaults
 $ update-rc.d mysql defaults
+```
 
 Over ssh, go into the directory you want to install BlacklistMonitor into and clone the git repo.  Usually this would be a web server directory like /var/www/html/ - the rest of the commands below assume you're using this dir and the config files do as well.
 
