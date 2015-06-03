@@ -22,18 +22,18 @@ update-rc.d mysql defaults
 Go into the directory you want to install BlacklistMonitor into and clone the git repo.  Usually this would be a web server directory like /var/www/html/.  The rest of the commands below assume you're using this dir and the default config files do as well.
 
 ```
-$ cd /var/www/html/
-$ git clone git://github.com/mikerlynn/blacklistmonitor.git
+cd /var/www/html/
+git clone git://github.com/mikerlynn/blacklistmonitor.git
 ```
 
 ## Initialize Data
 ```
-$ mysql -p < /var/www/html/blacklistmonitor/setup/blacklistmonitor.sql
+mysql -p < /var/www/html/blacklistmonitor/setup/blacklistmonitor.sql
 ```
 
 ## Copy Default Config
 ```
-$ cp /var/www/html/blacklistmonitor/setup/blacklistmonitor.cfg /etc/
+cp /var/www/html/blacklistmonitor/setup/blacklistmonitor.cfg /etc/
 ```
 
 After you've copied the config file you need to edit it to customize it for your setup here: /etc/blacklistmonitor.cfg
@@ -41,19 +41,19 @@ After you've copied the config file you need to edit it to customize it for your
 
 ## Schedule Cron
 ```
-$ cp /var/www/html/blacklistmonitor/setup/blacklistmonitor.cron /etc/cron.d/
+cp /var/www/html/blacklistmonitor/setup/blacklistmonitor.cron /etc/cron.d/
 ```
 
 ## Service
 ```
-$ cp /var/www/html/blacklistmonitor/setup/blacklistmonitor.conf /etc/init/
+cp /var/www/html/blacklistmonitor/setup/blacklistmonitor.conf /etc/init/
 ```
 
 ### start/stop/restart
 ```
-$ start blacklistmonitor
-$ stop blacklistmonitor
-$ restart blacklistmonitor
+start blacklistmonitor
+stop blacklistmonitor
+restart blacklistmonitor
 ```
 
 ### Website
@@ -62,7 +62,7 @@ The default username and password to the portal is admin/pa55w0rd
 
 Watch your log for issues/performance
 ```
-$ tail -f /var/log/blacklistmonitor.log
+tail -f /var/log/blacklistmonitor.log
 ```
 
 
