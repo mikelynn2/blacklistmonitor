@@ -2,6 +2,9 @@
 <?php
 set_time_limit(0);
 
+//prevent non cli access
+if(php_sapi_name()!=='cli') exit();
+
 $dir = dirname(dirname(__FILE__));
 class_exists('Setup', false) or include($dir.'/classes/Setup.class.php');
 class_exists('Utilities', false) or include($dir.'/classes/Utilities.class.php');
