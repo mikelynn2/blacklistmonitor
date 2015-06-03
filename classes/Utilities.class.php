@@ -12,8 +12,8 @@ class Utilities {
 	public static $frequencyCheckOptions = array('1hour', '2hour', '8hour', 'daily', 'weekly');
 	public static $mysql = false;
 
-	public static function setBlockLists($resetCache = false){
-		$localCache = new _FileCache('blacklistmonitor-Utilities-BlockLists', 300);
+	public static function setBlockLists(){
+		$localCache = new _FileCache('blacklistmonitor-Utilities-BlockLists', 60);
 		$cacheKey = 'bl';
 		if(!$resetCache){
 			$cacheData = $localCache->get($cacheKey);
