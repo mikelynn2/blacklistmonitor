@@ -12,7 +12,7 @@ class Setup {
 		if(self::$instance===null){
 
 			ini_set('error_reporting', E_ALL | E_STRICT | E_NOTICE);
-			$cfg = parse_ini_file('server.cfg', false);
+			$cfg = parse_ini_file('/etc/blacklistmonitor.cfg', false);
 			ini_set('display_errors', $cfg['display_errors']);
 			ini_set('error_log', $cfg['log_path']);
 
@@ -38,4 +38,3 @@ Setup::$instance = new Setup();
 if(php_sapi_name()!=='cli'){
 	session_start();
 }
-//print_r(Setup::$settings);
