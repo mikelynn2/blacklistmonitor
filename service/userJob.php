@@ -107,6 +107,7 @@ if($hostsChanged > 0 && $user['disableEmailNotices']==0){
 		$mail->IsSMTP();
 		$mail->Host = Setup::$settings['smtp_server'];
 		$mail->From = Setup::$settings['from_email'];
+		$mail->FromName = Setup::$settings['from_name'];
 		foreach($e as $a){
 			if(trim($a)!=''){
 				$mail->AddAddress($a);
@@ -125,6 +126,7 @@ if($hostsChanged > 0 && $user['disableEmailNotices']==0){
 		$mail->IsSMTP();
 		$mail->Host = Setup::$settings['smtp_server'];
 		$mail->From = Setup::$settings['from_email'];
+		$mail->FromName = Setup::$settings['from_name'];
 		foreach($e as $a){
 			if(trim($a)!=''){
 				$mail->AddAddress($a);
