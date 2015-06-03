@@ -24,7 +24,7 @@ $ update-rc.d apache2 defaults
 $ update-rc.d mysql defaults
 ```
 
-Over ssh, go into the directory you want to install BlacklistMonitor into and clone the git repo.  Usually this would be a web server directory like /var/www/html/ - the rest of the commands below assume you're using this dir and the config files do as well.
+Go into the directory you want to install BlacklistMonitor into and clone the git repo.  Usually this would be a web server directory like /var/www/html/.  The rest of the commands below assume you're using this dir and the default config files do as well.
 
 ```
 $ cd /var/www/html/
@@ -40,6 +40,9 @@ $ mysql -p < /var/www/html/blacklistmonitor/setup/blacklistmonitor.sql
 ```
 $ cp /var/www/html/blacklistmonitor/setup/blacklistmonitor.cfg /etc/
 ```
+
+After you've copied the config file you need to edit it to customize it for your setup.
+
 
 ## Schedule Cron
 ```
