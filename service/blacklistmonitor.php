@@ -100,7 +100,7 @@ function monitorProcessWatch($parentProcessId){
 		// delete finished processes
 		for ($x = 0; $x < $processCountMonitors; $x++) {
 			if(isset($monitorProcesses[$x])){
-				if(!Utilities::is_process_running()){
+				if(!Utilities::is_process_running($monitorProcesses[$x])){
 					unset($monitorProcesses[$x]);
 				}
 			}
