@@ -56,6 +56,10 @@ $ stop blacklistmonitor
 $ restart blacklistmonitor
 ```
 
+### Website
+The default username and password to the portal is admin/pa55w0rd
+
+
 Watch your log for issues/performance
 ```
 $ tail -f /var/log/blacklistmonitor.log
