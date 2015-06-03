@@ -31,6 +31,11 @@ git clone git://github.com/mikerlynn/blacklistmonitor.git
 mysql -p < /var/www/html/blacklistmonitor/setup/blacklistmonitor.sql
 ```
 
+## Setup Apache
+```
+cp /var/www/html/blacklistmonitor/setup/blacklistmonitor-apache.conf /etc/apache2/sites-enabled/
+```
+
 ## Copy Default Config
 ```
 cp /var/www/html/blacklistmonitor/setup/blacklistmonitor.cfg /etc/
