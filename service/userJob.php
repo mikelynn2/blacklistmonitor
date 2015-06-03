@@ -108,18 +108,22 @@ if($hostsChanged > 0 && $user['disableEmailNotices']==0){
 		// regular email
 		$mail = new PHPMailer();
 		$mail->IsSMTP();
-		$mail->Host = Setup::$settings['smtp_server'];
-		$mail->From = Setup::$settings['from_email'];
-		$mail->FromName = Setup::$settings['from_name'];
-		foreach($e as $a){
-			if(trim($a)!=''){
-				$mail->AddAddress($a);
+		try{
+			$mail->Host = Setup::$settings['smtp_server'];
+			$mail->From = Setup::$settings['from_email'];
+			$mail->FromName = Setup::$settings['from_name'];
+			foreach($e as $a){
+				if(trim($a)!=''){
+					$mail->AddAddress($a);
+				}
 			}
+			$mail->Subject = Setup::$settings['alert_subject'];
+			$mail->isHtml(true);
+			$mail->Body = "$noticeMessage $summary $table $footer";
+			$mail->Send();
+		} catch (Exception $e) {
+			_Logging::appLog($e->getMessage());
 		}
-		$mail->Subject = Setup::$settings['alert_subject'];
-		$mail->isHtml(true);
-		$mail->Body = "$noticeMessage $summary $table $footer";
-		$mail->Send();
 	}
 	
 	// text message
@@ -127,18 +131,22 @@ if($hostsChanged > 0 && $user['disableEmailNotices']==0){
 	if(count($e) > 0){
 		$mail = new PHPMailer();
 		$mail->IsSMTP();
-		$mail->Host = Setup::$settings['smtp_server'];
-		$mail->From = Setup::$settings['from_email'];
-		$mail->FromName = Setup::$settings['from_name'];
-		foreach($e as $a){
-			if(trim($a)!=''){
-				$mail->AddAddress($a);
+		try{
+			$mail->Host = Setup::$settings['smtp_server'];
+			$mail->From = Setup::$settings['from_email'];
+			$mail->FromName = Setup::$settings['from_name'];
+			foreach($e as $a){
+				if(trim($a)!=''){
+					$mail->AddAddress($a);
+				}
 			}
+			$mail->Subject = Setup::$settings['alert_subject_text'];
+			$mail->isHtml(false);
+			$mail->Body = "$url/hosts.php?oc=1 $summaryText";
+			$mail->Send();
+		} catch (Exception $e) {
+			_Logging::appLog($e->getMessage());
 		}
-		$mail->Subject = Setup::$settings['alert_subject_text'];
-		$mail->isHtml(false);
-		$mail->Body = "$url/hosts.php?oc=1 $summaryText";
-		$mail->Send();
 	}
 	
 	if($user['twitterHandle']!=''){
