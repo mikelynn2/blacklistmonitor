@@ -36,7 +36,7 @@ $ mysql -p < /var/www/html/blacklistmonitor/setup/blacklistmonitor.sql
 $ cp /var/www/html/blacklistmonitor/setup/blacklistmonitor.cfg /etc/
 ```
 
-After you've copied the config file you need to edit it to customize it for your setup.
+After you've copied the config file you need to edit it to customize it for your setup here: /etc/blacklistmonitor.cfg
 
 
 ## Schedule Cron
