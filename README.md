@@ -6,11 +6,11 @@ Application for monitoring Domains and IPs on RBLs.
 
 ## Prerequisite software
 - [MySQL](http://www.MySQL.org) or [MariaDB](https://mariadb.org/) are needed for the database.
-- Most likely you'll need your own DNS server as well.  You can use [Bind](https://www.isc.org/downloads/bind/) or even better (its faster) [unbound](https://www.unbound.net/)
+- Most likely you'll need your own DNS server as well.  You can use [Bind](https://www.isc.org/downloads/bind/) or even [unbound](https://www.unbound.net/).  Bind is easier, unbound may be faster.
 - Apache or Nginx
 
 
-## Installation (Ubuntu)
+## Installation (Ubuntu/mariadb/bind/apache)
 ```
 apt-get -y install apache2
 apt-get -y install mariadb-server mariadb-client mariadb-common
