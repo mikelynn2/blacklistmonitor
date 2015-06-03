@@ -44,7 +44,7 @@ class Utilities {
 	}
 
 	public static function randomDNSServer(){
-		return Setup::$settings['dns_servers'][mt_rand(0,(count(Setup::$settings['dns_servers']-1))];
+		return Setup::$settings['dns_servers'][mt_rand(0,(count(Setup::$settings['dns_servers'])-1))];
 	}
 
 	public static $isBlocked = 0;
