@@ -15,14 +15,12 @@ class Utilities {
 	public static function setBlockLists(){
 		$localCache = new _FileCache('blacklistmonitor-Utilities-BlockLists', 60);
 		$cacheKey = 'bl';
-		if(!$resetCache){
-			$cacheData = $localCache->get($cacheKey);
-			if ($cacheData !== false) {
-				if(isset($cacheData['domains']) && isset($cacheData['ips']) ) {
-					self::$domainBlacklists = $cacheData['domains'];
-					self::$ipBlacklists = $cacheData['ips'];
-					return true;
-				}
+		$cacheData = $localCache->get($cacheKey);
+		if ($cacheData !== false) {
+			if(isset($cacheData['domains']) && isset($cacheData['ips']) ) {
+				self::$domainBlacklists = $cacheData['domains'];
+				self::$ipBlacklists = $cacheData['ips'];
+				return true;
 			}
 		}
 		$mysql = new _MySQL();
