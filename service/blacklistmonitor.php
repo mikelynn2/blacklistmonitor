@@ -36,22 +36,28 @@ function main(){
 		_Logging::appLog("Parent process couldnt get pid");
 	}
 
-	$cmd = 'php '.dirname(__FILE__).'/blacklistmonitor.php -p monitorProcessWatch -i '.$parentProcessId;
-	$pid1 = Utilities::run_in_background($cmd);
-
 	$userProcessId = 0;
+	$monitorProcessesId = 0;
 
 	$mysql = new _MySQL();
-	$mysql->connect(Setup::$connectionArray);
 
-	// user control
+	// control
 	while (true) {
-		if(!Utilities::is_process_running($userProcessId)){
-			$userCheck = $mysql->runQueryReturnVar("select username from users where beenChecked = 0");
-			if($userCheck!==false){
-				$cmd = 'php '.dirname(__FILE__).'/userJob.php -i '.$parentProcessId;
-				$userProcessId = Utilities::run_in_background($cmd);
+		try{
+			$mysql->connect(Setup::$connectionArray);
+			if(!Utilities::is_process_running($userProcessId)){
+				$userCheck = $mysql->runQueryReturnVar("select username from users where beenChecked = 0");
+				if($userCheck!==false){
+					$cmd = 'php '.dirname(__FILE__).'/userJob.php -i '.$parentProcessId;
+					$userProcessId = Utilities::run_in_background($cmd);
+				}
 			}
+		} catch (Exception $e) {
+			_Logging::appLog($e->getMessage());
+		}
+		if(!Utilities::is_process_running($monitorProcessesId)){
+			$cmd = 'php '.dirname(__FILE__).'/blacklistmonitor.php -p monitorProcessWatch -i '.$parentProcessId;
+			$monitorProcessesId = Utilities::run_in_background($cmd);
 		}
 		sleep(15);//15 seconds
 	}
