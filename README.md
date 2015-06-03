@@ -1,13 +1,8 @@
 # BlacklistMonitor
 ```
-/*
-Copyright (c) by respective owners. All rights reserved.  Released under a BSD (revised)
-license as described in the file LICENSE.
- */
+Copyright (c) by respective owners. All rights reserved.  Released under license as described in the file LICENSE.txt
 ```
-Application for monitoring Domains and IPs on RBLs
-
-Work in progress
+Application for monitoring Domains and IPs on RBLs.
 
 ## Prerequisite software
 - [MySQL](http://www.MySQL.org) or [MariaDB](https://mariadb.org/) are needed for the database.
