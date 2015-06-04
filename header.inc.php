@@ -36,5 +36,5 @@ class_exists('Utilities', false) or include('classes/Utilities.class.php');
 			}
 			?>
 			</ul>
-			<a href="/"><img src="img/logo.png" alt="logo"></a><br>
+			<img src="img/logo.png" alt="logo"><br>
 		</div>
