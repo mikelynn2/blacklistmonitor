@@ -96,8 +96,8 @@ $(document).ready(function() {
 		['Blocked',<?php echo($hostsCountError);?>],
 		['Clean',<?php echo($hostsCount-$hostsCountError);?>]
 	]);
-	data.setFormattedValue(0, 0, data.getValue(0, 0) + ' ' + (<?php echo(number_format($hostsCountError));?>));
-	data.setFormattedValue(1, 0, data.getValue(1, 0) + ' ' + (<?php echo(number_format($hostsCount-$hostsCountError));?>));
+	data.setFormattedValue(0, 0, data.getValue(0, 0) + ' ' + (<?php echo($hostsCountError);?>));
+	data.setFormattedValue(1, 0, data.getValue(1, 0) + ' ' + (<?php echo($hostsCount-$hostsCountError);?>));
 	var options = {
 		title: 'Current Network Status',
 		is3D: true,
