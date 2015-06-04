@@ -119,7 +119,7 @@ function monitorProcessWatch($parentProcessId){
 		$processCountMonitors = count($monitorProcesses);
 
 		//randomly reset counter every now and then
-		if(mt_rand(1,500)==1){
+		if(mt_rand(1,5000)==1){
 			$m->endWork();
 			_Logging::appLog("App Avg Hosts/sec: {$m->avgPerformance}\tMonitor Threads: $processCountMonitors/$parallelProcessesMonitors");
 			$m = new _MeasurePerformance();
