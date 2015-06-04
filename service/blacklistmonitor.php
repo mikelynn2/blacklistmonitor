@@ -75,42 +75,46 @@ function monitorProcessWatch($parentProcessId){
 	$monitorProcesses = array();
 	$processCountMonitors = 0;
 
+	$ipDomain = false;
+
 	while (true) {
 		// are we still running?
 		if(!Utilities::is_process_running($parentProcessId)){
-			_Logging::appLog("Parent Stopped - monitorStartWatch exited");
-			exit();
+				_Logging::appLog("Parent Stopped - monitorStartWatch exited");
+				exit();
 		}
 
-		// run monitors
-		$ipDomain = false;
+		$processCountMonitors = count($monitorProcesses);
 
 		if ($processCountMonitors < $parallelProcessesMonitors){
-			$ipDomain = Utilities::getNextMonitor($mysql);
-			if ($ipDomain!==false) {
-				// start it
-				$cmd = 'php '.dirname(__FILE__).'/monitorJob.php -h '.escapeshellarg($ipDomain);
-				$pid = Utilities::run_in_background($cmd);
-				$m->work(1);
-				$monitorProcesses[] = $pid;
-			}
+				$ipDomain = Utilities::getNextMonitor($mysql);
+				if ($ipDomain!==false) {
+						// start it
+						$cmd = 'php '.dirname(__FILE__).'/monitorJob.php -h '.escapeshellarg($ipDomain);
+						$pid = Utilities::run_in_background($cmd);
+						$m->work(1);
+						$monitorProcesses[] = $pid;
+				}
 		}
 
 		// was there any work?
 		if($ipDomain===false){
-			sleep(10);//10 seconds
+				sleep(10);//10 seconds
 		}else{
-			usleep(5000);//ideal time 5ms
+				usleep(10000);//ideal time 10ms
 		}
 
 		// delete finished processes
 		for ($x = 0; $x < $processCountMonitors; $x++) {
-			if(isset($monitorProcesses[$x])){
-				if(!Utilities::is_process_running($monitorProcesses[$x])){
-					unset($monitorProcesses[$x]);
+				if(isset($monitorProcesses[$x])){
+						if(!Utilities::is_process_running($monitorProcesses[$x])){
+								unset($monitorProcesses[$x]);
+						}
 				}
-			}
 		}
+
+		// fix array index
+		$monitorProcesses = array_values($monitorProcesses);
 
 		$processCountMonitors = count($monitorProcesses);
 
