@@ -10,7 +10,7 @@ if(Utilities::isLoggedIn()===false){
 $host = array_key_exists('host', $_POST) ? $_POST['host'] : '';
 $toggle = array_key_exists('toggle', $_POST) ? (int)$_POST['toggle'] : 0;
 
-$titlePreFix = "Hosts";
+$titlePreFix = "Block Lists";
 
 $user = Utilities::getAccount();
 $mysql = new _MySQL();
