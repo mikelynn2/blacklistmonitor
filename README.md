@@ -5,6 +5,7 @@ Copyright (c) by respective owners. All rights reserved.  Released under license
 Application for monitoring Domains and IPs on RBLs.
 
 [![Build Status](https://scrutinizer-ci.com/g/mikerlynn/blacklistmonitor/badges/build.png?b=master)](https://scrutinizer-ci.com/g/mikerlynn/blacklistmonitor/build-status/master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mikerlynn/blacklistmonitor/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mikerlynn/blacklistmonitor/?branch=master)
 
 ## Features
 - Supports All Major Blacklists.  You can customize this list
