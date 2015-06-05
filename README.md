@@ -4,6 +4,8 @@ Copyright (c) by respective owners. All rights reserved.  Released under license
 ```
 Application for monitoring Domains and IPs on RBLs.
 
+{<img src="https://scrutinizer-ci.com/g/mikerlynn/blacklistmonitor/badges/build.png?b=master" alt="Build Status" />}[https://scrutinizer-ci.com/g/mikerlynn/blacklistmonitor/build-status/master]
+
 ## Features
 - Supports All Major Blacklists.  You can customize this list
 - Monitor blocks of IPs in CIDR Format and your domains
