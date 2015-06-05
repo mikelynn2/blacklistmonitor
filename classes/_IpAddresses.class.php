@@ -113,7 +113,7 @@ class _IpAddresses {
 	}
 
 	public static function getRemoteIP() {
-		return _IpAddresses::getRemoteHardIP();
+		return (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '');
 	}
 
 	public static function getAllIPsFromString($str, $dedup = true) {
