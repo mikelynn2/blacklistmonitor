@@ -56,8 +56,13 @@ After you've copied the config file you need to edit it to customize it for your
 
 
 ## Schedule Cron
+Add the contents of this file into cron
 ```
-cp /var/www/html/blacklistmonitor/setup/blacklistmonitor.cron /etc/cron.d/blacklistmonitor
+cat /var/www/html/blacklistmonitor/setup/blacklistmonitor.cron
+```
+edit crontab
+```
+crontab -e
 ```
 
 ## Service
