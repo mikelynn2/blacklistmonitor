@@ -11,6 +11,7 @@ Application for monitoring Domains and IPs on RBLs.
 - Supports All Major Blacklists.  You can customize this list
 - Monitor blocks of IPs in CIDR Format and your domains
 - Web based reporting
+- API for integration or access the database in mysql directly
 - Email, SMS, and Twitter Alerts
 
 ## Prerequisite software
@@ -53,6 +54,8 @@ cp /var/www/html/blacklistmonitor/setup/blacklistmonitor.cfg /etc/
 ```
 
 After you've copied the config file you need to edit it to customize it for your setup here: /etc/blacklistmonitor.cfg
+
+Don't even try to use google or opendns public DNS servers.  Many RBLs block these from queries.
 
 
 ## Schedule Cron
