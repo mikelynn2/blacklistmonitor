@@ -5,6 +5,7 @@ class_exists('_MySQL', false) or include('classes/_MySQL.class.php');
 
 $searchS = array_key_exists('searchS', $_GET) ? trim($_GET['searchS']) : '';
 $oc = array_key_exists('oc', $_GET) ? (int)$_GET['oc'] : 4;
+$hostType = array_key_exists('ht', $_GET) ? $_GET['ht'] : 'all';
 $limit = array_key_exists('l', $_GET) ? (int)$_GET['l'] : 100;
 
 if(Utilities::isLoggedIn()===false){
@@ -18,6 +19,7 @@ $user = Utilities::getAccount();
 $mysql = new _MySQL();
 $mysql->connect(Setup::$connectionArray);
 $searchSQL = "";
+$hostTypeSQL = "";
 $orderSQL = " order by ";
 $limitSQL = "";
 switch($oc){
@@ -39,14 +41,12 @@ switch($oc){
 		break;
 }
 
-switch($limit){
-	case 20:
-		$orderSQL .= " limit 20 ";
+switch($hostType){
+	case 'domains':
+		$hostTypeSQL .= " and isDomain = 1 ";
 		break;
-	case 100:
-		$orderSQL .= " limit 100 ";
-		break;
-	default:
+	case 'ips':
+		$hostTypeSQL .= " and isDomain = 0 ";
 		break;
 }
 
@@ -59,7 +59,7 @@ if($searchS != ''){
 $sql = "
 select isBlocked,lastUpdate,ipDomain,lastStatusChangeTime,rDNS,status
 from monitors
-where 1=1 $searchSQL
+where 1=1 $hostTypeSQL $searchSQL
 $orderSQL
 ";
 $rs = $mysql->runQuery($sql);
@@ -82,6 +82,9 @@ $(document).ready(function() {
 		$("#reportForm").submit();
 	});
 	$(".recentFilter").change(function() {
+		$("#reportForm").submit();
+	});
+	$(".hostType").change(function() {
 		$("#reportForm").submit();
 	});
 });
@@ -129,11 +132,20 @@ $(document).ready(function() {
 			<input class="reportType" type="radio" name="oc" value="4"<?php if($oc==4) echo(' checked');?>>All
 		</label>
 		<div class="form-group">
-			<div class="col-md-2">
-				<select id="l" name="l" class="form-control recentFilter">
+			<div class="col-md-6">
+				<select id="l" name="l" class="form-control recentFilter input-sm">
 					<option value="0"<?php if($limit==0) echo(' selected');?>>all</option>
 					<option value="20"<?php if($limit==20) echo(' selected');?>>20 most recent</option>
 					<option value="100"<?php if($limit==100) echo(' selected');?>>100 most recent</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-6">
+				<select id="ht" name="ht" class="form-control hostType input-sm">
+					<option value="all"<?php if($hostType=='all') echo(' selected');?>>all</option>
+					<option value="ips"<?php if($hostType=='ips') echo(' selected');?>>ips</option>
+					<option value="domain"<?php if($hostType=='domains') echo(' selected');?>>domains</option>
 				</select>
 			</div>
 		</div>
