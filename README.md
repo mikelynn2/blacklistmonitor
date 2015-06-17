@@ -2,7 +2,7 @@
 ```
 Copyright (c) by respective owners. All rights reserved.  Released under license as described in the file LICENSE.txt
 ```
-Application for monitoring Domains and IPs on RBLs.
+Application for monitoring Domains and IPs on RBLs.  With blacklistmonitor you can monitor and document IP ranges and domain names for showing up on RBL servers.
 
 [![Build Status](https://scrutinizer-ci.com/g/mikerlynn/blacklistmonitor/badges/build.png?b=master)](https://scrutinizer-ci.com/g/mikerlynn/blacklistmonitor/build-status/master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mikerlynn/blacklistmonitor/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mikerlynn/blacklistmonitor/?branch=master)
@@ -16,7 +16,7 @@ Application for monitoring Domains and IPs on RBLs.
 
 ## Prerequisite software
 - [MySQL](http://www.MySQL.org) or [MariaDB](https://mariadb.org/) are needed for the database.
-- Most likely you'll need your own DNS server as well.  You can use [Bind](https://www.isc.org/downloads/bind/) or even [unbound](https://www.unbound.net/).  Bind is easier, unbound may be faster.
+- Most likely you'll need your own DNS server as well.  You can use [Bind](https://www.isc.org/downloads/bind/) or even [unbound](https://www.unbound.net/).  Bind is easier, unbound may be faster.  You can attempt to use your ISPs name servers (see your /etc/resolve.conf).  Some large ISPs name servers won't work and you'll need to run your own.  Blacklistmonitor will not by default use your OS name servers.
 - Apache or Nginx
 - SMTP Mail server like postfix
 
@@ -82,6 +82,7 @@ restart blacklistmonitor
 
 ### Website
 The default username and password to the portal is admin/pa55w0rd
+It's recommended to change both.  Especially if you're installing this on a public network.
 
 ### Timezone Setup
 ```
