@@ -21,7 +21,7 @@ $mysql->connect(Setup::$connectionArray);
 $searchSQL = "";
 $hostTypeSQL = "";
 $orderSQL = " order by ";
-$limitSQL = "";
+$limitSQL = " limit $limit ";
 switch($oc){
 	case 1:
 		$searchSQL .= " and lastStatusChanged = 1 ";
@@ -61,6 +61,7 @@ select isBlocked,lastUpdate,ipDomain,lastStatusChangeTime,rDNS,status
 from monitors
 where 1=1 $hostTypeSQL $searchSQL
 $orderSQL
+$limitSQL
 ";
 $rs = $mysql->runQuery($sql);
 
@@ -137,6 +138,7 @@ $(document).ready(function() {
 					<option value="0"<?php if($limit==0) echo(' selected');?>>all</option>
 					<option value="20"<?php if($limit==20) echo(' selected');?>>20 most recent</option>
 					<option value="100"<?php if($limit==100) echo(' selected');?>>100 most recent</option>
+					<option value="500"<?php if($limit==500) echo(' selected');?>>500 most recent</option>
 				</select>
 			</div>
 		</div>
