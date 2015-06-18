@@ -11,7 +11,7 @@ Application for monitoring Domains and IPs on RBLs.  With blacklistmonitor you c
 - Supports All Major Blacklists.  You can customize this list
 - Monitor blocks of IPs in CIDR Format and your domains
 - Web based reporting
-- API for integration or access the database in mysql directly
+- API for integration or access the mysql database directly
 - Email, SMS, and Twitter Alerts
 
 ## Prerequisite software
@@ -22,10 +22,13 @@ Application for monitoring Domains and IPs on RBLs.  With blacklistmonitor you c
 
 ## Installation (Ubuntu/mariadb/bind/apache)
 ```
+#install
 apt-get -y install apache2
 apt-get -y install mariadb-server mariadb-client mariadb-common
 apt-get -y install php5 php5-mysqlnd php5-cli php5-curl
 apt-get -y install bind9
+
+#set to start on boot
 update-rc.d bind9 defaults
 update-rc.d apache2 defaults
 update-rc.d mysql defaults
