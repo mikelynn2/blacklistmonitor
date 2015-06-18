@@ -2,7 +2,6 @@
 class_exists('Setup', false) or include('classes/Setup.class.php');
 class_exists('Utilities', false) or include('classes/Utilities.class.php');
 class_exists('_MySQL', false) or include('classes/_MySQL.class.php');
-class_exists('PHPMailer', false) or include('classes/class.phpmailer.php');
 
 $titlePreFix = "login";
 
