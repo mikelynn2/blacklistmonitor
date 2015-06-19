@@ -4,8 +4,8 @@ Copyright (c) by respective owners. All rights reserved.  Released under license
 ```
 Application for monitoring Domains and IPs on RBLs.  With blacklistmonitor you can monitor and document IP ranges and domain names for showing up on RBL servers.
 
-[![Build Status](https://scrutinizer-ci.com/g/mikerlynn/blacklistmonitor/badges/build.png?b=master)](https://scrutinizer-ci.com/g/mikerlynn/blacklistmonitor/build-status/master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mikerlynn/blacklistmonitor/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mikerlynn/blacklistmonitor/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/mikelynn2/blacklistmonitor/badges/build.png?b=master)](https://scrutinizer-ci.com/g/mikerlynn/blacklistmonitor/build-status/master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mikelynn2/blacklistmonitor/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mikelynn2/blacklistmonitor/?branch=master)
 
 ## Features
 - Supports All Major Blacklists.  You can customize this list
