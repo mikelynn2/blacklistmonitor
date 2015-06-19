@@ -21,7 +21,7 @@ $mysql->connect(Setup::$connectionArray);
 $searchSQL = "";
 $hostTypeSQL = "";
 $orderSQL = " order by ";
-$limitSQL = " limit $limit ";
+$limitSQL = ($limit > 0) ? " limit $limit " : '';
 switch($oc){
 	case 1:
 		$searchSQL .= " and lastStatusChanged = 1 ";
