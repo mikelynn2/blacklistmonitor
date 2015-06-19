@@ -17,6 +17,11 @@ $options['r'] = isset($options['r']) ? $options['r'] : '';
 $mysql = new _MySQL();
 $mysql->connect(Setup::$connectionArray);
 
+if($options['r']=='blockListStats'){
+	$mysql->runQuery("update blockLists set blocksYesterday = blocksToday, cleanYesterday = cleanToday; ");
+	$mysql->runQuery("update blockLists set blocksToday = 0, cleanToday = 0; ");
+	_Logging::appLog("block list stats updated");
+}
 if($options['r']=='weekly'){
 	$mysql->runQuery("update users set beenChecked = 0 where checkFrequency = 'weekly';");
 	_Logging::appLog("weekly reset");

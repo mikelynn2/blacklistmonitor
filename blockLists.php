@@ -33,7 +33,7 @@ if($host != ''){
 $sql = "
 select *
 from blockLists
-order by isActive desc, importance desc, host, monitorType
+order by isActive desc, blocksToday desc
 ";
 $rs = $mysql->runQuery($sql);
 
@@ -90,6 +90,10 @@ function toggleBlacklist(host){
 				<th>Type</th>
 				<th>Description</th>
 				<th>Importance</th>
+				<th>Blocks Today</th>
+				<th>Clean Today</th>
+				<th>Blocks Yest</th>
+				<th>Clean Yest</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -112,6 +116,10 @@ function toggleBlacklist(host){
 				case 1: echo('<span class="label label-default">Low</span>'); break;
 			}
 			echo('</td>');
+			echo('<td style="white-space: nowrap">'.number_format($row['blocksToday'],0).'</td>');
+			echo('<td style="white-space: nowrap">'.number_format($row['cleanToday'],0).'</td>');
+			echo('<td style="white-space: nowrap">'.number_format($row['blocksYesterday'],0).'</td>');
+			echo('<td style="white-space: nowrap">'.number_format($row['cleanYesterday'],0).'</td>');
 			echo('</tr>');
 		}
 		$mysql->close();
