@@ -135,7 +135,7 @@ if($hostsChanged > 0 && $user['disableEmailNotices']==0){
 				$mail->AddAddress($a);
 			}
 		}
-		$mail->Subject = Setup::$settings['alert_subject_text'];
+		$mail->Subject = Setup::$settings['alert_subject_sms'];
 		$mail->isHtml(false);
 		$mail->Body = "$url/hosts.php?oc=1 $summaryText";
 		$mail->Send();
