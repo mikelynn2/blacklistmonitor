@@ -167,7 +167,7 @@ class Utilities {
 	}
 
 	public static function logBlockListStats($server, $monitorType, $isBlocked){
-		if(Setup::$settings['log_rbl_stats']==0) return true;;
+		if(Setup::$settings['log_rbl_stats']==0) return true;
 		$mysql = new _MySQL();
 		$mysql->connect(Setup::$connectionArray);
 		if($isBlocked){
