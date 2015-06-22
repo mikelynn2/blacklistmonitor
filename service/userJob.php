@@ -11,10 +11,10 @@ class_exists('Setup', false) or include($dir.'/classes/Setup.class.php');
 class_exists('Utilities', false) or include($dir.'/classes/Utilities.class.php');
 class_exists('Twitter', false) or include($dir.'/classes/Twitter.class.php');
 class_exists('_MySQL', false) or include($dir.'/classes/_MySQL.class.php');
-class_exists('_IpAddresses', false) or include($dir.'/classes/_IpAddresses.class.php');
 class_exists('_Logging', false) or include($dir.'/classes/_Logging.class.php');
 class_exists('_MeasurePerformance', false) or include($dir.'/classes/_MeasurePerformance.class.php');
 class_exists('PHPMailer', false) or include($dir.'/classes/class.phpmailer.php');
+class_exists('SMTP', false) or include($dir.'/classes/class.smtp.php');
 
 $options = getopt("i:");
 $parentProcessId = isset($options['i']) ? (int)$options['i'] : 0;
