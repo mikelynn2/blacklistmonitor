@@ -23,11 +23,10 @@ class _MySQL {
 		// [tammytattoo] Added support for port specifiers
 		$hostParts = explode(':', $connectionArray[0]);
 		if(count($hostParts) == 2) {
-    			$connectionArray[0] = $hostParts[0];
-    			$connectionArray[4] = $hostParts[1];
-		}
-		else {
-    			$connectionArray[4] = 3306;
+			$connectionArray[0] = $hostParts[0];
+			$connectionArray[4] = $hostParts[1];
+		} else {
+			$connectionArray[4] = 3306;
 		}
 		$this->connectionArray = $connectionArray;
 		$this->close();
@@ -54,18 +53,14 @@ class _MySQL {
 		}
 		$result = @mysqli_query($this->mysqlCon, $query);
 		if ($result === false) {
-		//	error_log($query.' Error:'. mysql_error($this->mysqlCon));
-		//	echo($query.' Error:'. mysql_error($this->mysqlCon));
 			throw new Exception("Database query failed: $query\n\n" . mysqli_error($this->mysqlCon));
 		}
-		if(	
+		if(
 			(stripos($query,'INSERT')!==false) ||
 			(stripos($query,'UPDATE')!==false) ||
 			(stripos($query,'DELETE')!==false)
 			) {
 			$this->affectedRows = mysqli_affected_rows($this->mysqlCon);
-		}else{
-			//$this->affectedRows = mysql_num_rows($this->mysqlCon);
 		}
 		if(stripos($query,'INSERT')!==false) $this->identity = mysqli_insert_id($this->mysqlCon);
 		return $result;
