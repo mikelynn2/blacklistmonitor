@@ -22,10 +22,10 @@ class _MySQL {
 	public function connect($connectionArray) {
 		// [tammytattoo] Added support for port specifiers
 		$hostParts = explode(':', $connectionArray[0]);
-		if(count($hostParts) == 2) {
+		if (count($hostParts)==2) {
 			$connectionArray[0] = $hostParts[0];
 			$connectionArray[4] = $hostParts[1];
-		} else {
+		}else {
 			$connectionArray[4] = 3306;
 		}
 		$this->connectionArray = $connectionArray;
@@ -39,9 +39,9 @@ class _MySQL {
 		);
 		
 		// If no servers are responding, throw an exception.
-		if ($this->mysqlCon === false) {
+		if ($this->mysqlCon===false) {
 			throw new Exception(
-				'Unable to connect to any db servers - last error: ' .
+				'Unable to connect to any db servers - last error: '.
 				mysqli_error());
 		}
 		return $this->mysqlCon;
@@ -52,34 +52,34 @@ class _MySQL {
 			$this->connect($this->connectionArray);
 		}
 		$result = @mysqli_query($this->mysqlCon, $query);
-		if ($result === false) {
-			throw new Exception("Database query failed: $query\n\n" . mysqli_error($this->mysqlCon));
+		if ($result===false) {
+			throw new Exception("Database query failed: $query\n\n".mysqli_error($this->mysqlCon));
 		}
-		if(
-			(stripos($query,'INSERT')!==false) ||
-			(stripos($query,'UPDATE')!==false) ||
-			(stripos($query,'DELETE')!==false)
+		if (
+			(stripos($query, 'INSERT')!==false) ||
+			(stripos($query, 'UPDATE')!==false) ||
+			(stripos($query, 'DELETE')!==false)
 			) {
 			$this->affectedRows = mysqli_affected_rows($this->mysqlCon);
 		}
-		if(stripos($query,'INSERT')!==false) $this->identity = mysqli_insert_id($this->mysqlCon);
+		if (stripos($query, 'INSERT')!==false) $this->identity = mysqli_insert_id($this->mysqlCon);
 		return $result;
 	}
 
 	public function runQueryReturnVar($query) {
 		$result = false;
-		$rs = $this->runQuery($query . " limit 1;");
-		while($row = mysqli_fetch_array($rs, MYSQL_NUM)) $result = $row[0];
+		$rs = $this->runQuery($query." limit 1;");
+		while ($row = mysqli_fetch_array($rs, MYSQL_NUM)) $result = $row[0];
 		mysqli_free_result($rs);
 		return $result;
 	}
 
 	public function escape($var) {
-		return mysqli_real_escape_string($this->mysqlCon,$var);
+		return mysqli_real_escape_string($this->mysqlCon, $var);
 	}
 
 	public function close() {
-		if ($this->mysqlCon != null) {
+		if ($this->mysqlCon!=null) {
 			mysqli_close($this->mysqlCon);
 			$this->mysqlCon = null;
 		}
