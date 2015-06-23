@@ -25,7 +25,7 @@ class _MySQL {
 		if (count($hostParts)==2) {
 			$connectionArray[0] = $hostParts[0];
 			$connectionArray[4] = $hostParts[1];
-		}else {
+		} else {
 			$connectionArray[4] = 3306;
 		}
 		$this->connectionArray = $connectionArray;
