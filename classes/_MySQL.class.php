@@ -20,13 +20,23 @@ class _MySQL {
 	* connect() - takes a connection array - host,user,pass,database - has a default but wont work without database
 	**/
 	public function connect($connectionArray) {
+		// [tammytattoo] Added support for port specifiers
+		$hostParts = explode(':', $connectionArray[0]);
+		if(count($hostParts) == 2) {
+    			$connectionArray[0] = $hostParts[0];
+    			$connectionArray[4] = $hostParts[1];
+		}
+		else {
+    			$connectionArray[4] = 3306;
+		}
 		$this->connectionArray = $connectionArray;
 		$this->close();
 		$this->mysqlCon = mysqli_connect(
 			$connectionArray[0],
 			$connectionArray[1],
 			$connectionArray[2],
-			$connectionArray[3]
+			$connectionArray[3],
+			$connectionArray[4]
 		);
 		
 		// If no servers are responding, throw an exception.
