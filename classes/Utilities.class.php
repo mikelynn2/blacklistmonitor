@@ -342,7 +342,7 @@ class Utilities {
 		}else{
 			$host = escapeshellarg($host);
 			exec('host -t a -W 2 '.$host, $output, $return);
-			if ($return != 0) {
+			if ($return !== 0) {
 				return '';
 			}else{
 				$output = implode($output);
