@@ -38,7 +38,7 @@ Go into the directory you want to install BlacklistMonitor into and clone the gi
 
 ```
 cd /var/www/html/
-git clone git://github.com/mikerlynn/blacklistmonitor.git
+git clone git://github.com/mikelynn2/blacklistmonitor.git
 ```
 
 ## Initialize Data
