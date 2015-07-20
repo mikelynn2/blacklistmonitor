@@ -21,11 +21,12 @@ body {
 	color: #777;
 }
 
+/*
 @media (min-width: 768px) {
 	.container {
 		max-width: 840px;
 	}
-}
+}*/
 .container-narrow > hr {
 	margin: 30px 0;
 }
@@ -51,7 +52,7 @@ body {
 .marketing p + h4 {
 	margin-top: 28px;
 }
-
+/*
 @media screen and (min-width: 768px) {
 	.header,.marketing,.footer {
 		padding-left: 0;
@@ -63,7 +64,7 @@ body {
 	.jumbotron {
 		border-bottom: 0;
 	}
-}
+}*/
 #helpInfo {
 	margin-bottom: 15px;
 }

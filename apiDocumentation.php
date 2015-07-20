@@ -37,11 +37,16 @@ All responses from the API are JSON.
 		updateIPs - pass data var of whitespace delimited ip addresses/ranges.  Whitespace can be any tabs, spaces, new lines.<br/><br/>
 		checkHostStatus - pass data var of a single ip (not a range) or domain name for current black list status.<br/><br/>
 		blacklistStatus - data var - all (default) | blocked | changed | clean. Returns blacklist status of all current ips and domains<br/><br/>
+		clearAllHostAndGroupData - Clears out all hosts and host groups.  Doesn't delete host history though.
 		</td>
 	</tr>
 	<tr>
 		<td>data</td>
 		<td>When calling functions that need data passed use the var data.</td>
+	</tr>
+	<tr>
+		<td>groupName</td>
+		<td>When calling updateDomains or updateIPs, also pass the groupName var they should belong to.  If the group doesn't exist it will be auto created.</td>
 	</tr>
 </table>
 

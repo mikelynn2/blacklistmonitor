@@ -19,8 +19,6 @@ $textMessageEmails = array_key_exists('textMessageEmails', $_POST) ? substr($_PO
 $passwd = array_key_exists('passwd', $_POST) ? substr($_POST['passwd'],0,32) : '';
 $passwdOld = array_key_exists('passwdOld', $_POST) ? substr($_POST['passwdOld'],0,32) : '';
 $apiKey = array_key_exists('apiKey', $_POST) ? substr($_POST['apiKey'],0,32) : '';
-$domains = array_key_exists('domains', $_POST) ? trim(strtolower($_POST['domains'])) : '';
-$ips = array_key_exists('ips', $_POST) ? trim($_POST['ips']) : '';
 $disableEmailNotices = array_key_exists('disableEmailNotices', $_POST) ? (int)$_POST['disableEmailNotices'] : 0;
 $beenChecked = array_key_exists('beenChecked', $_POST) ? (int)$_POST['beenChecked'] : 0;
 $twitterHandle = array_key_exists('twitterHandle', $_POST) ? substr(trim($_POST['twitterHandle']),0,15) : '';
@@ -87,8 +85,6 @@ if (isset($_POST["submit"])) {
 			$mysql->runQuery("update users set beenChecked = 0");
 				$message[] = "Check scheduled.";
 		}
-		Utilities::updateDomains($domains);
-		Utilities::updateIPs($ips);
 		if($twitterHandle!=''){
 			$t = new Twitter();
 			$t->follow($twitterHandle);
@@ -196,18 +192,6 @@ foreach($message as $m){
 				<span class="input-group-addon">@</span>
 				<input class="form-control" type="text" id="twitterHandle" name="twitterHandle" value="<?php echo($user['twitterHandle']);?>" placeholder="twitter username">
 			</div>
-		</div>
-	</div>
-	<div class="form-group">
-		<label class="col-sm-3 control-label" for="domains">Domains<br/>(one domain per line)<a class="glyphicon glyphicon-info-sign" href="#" data-toggle="popover" data-content="Enter root domains only. Subdomains don't matter.  For example put gmail.com - not mail.gmail.com."></a></label>
-		<div class="col-sm-6">
-			<textarea class="form-control" name="domains" id="domains" rows="5"><?php echo(trim($user['domains']))?></textarea>
-		</div>
-	</div>
-	<div class="form-group">  
-		<label class="col-sm-3 control-label" for="ips">IPs<br/>(IPv4 Only, one ip or <a target="_new" href="http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">cidr</a> <br/> one per line, max size per line /24)</label>
-		<div class="col-sm-6">
-			<textarea class="form-control" name="ips" id="ips" rows="5"><?php echo(trim($user['ips']))?></textarea>
 		</div>
 	</div>
 	<div class="form-group">

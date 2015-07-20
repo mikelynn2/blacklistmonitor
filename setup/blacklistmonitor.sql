@@ -32,12 +32,12 @@ INSERT INTO `blockLists` (`host`, `monitorType`, `functionCall`, `description`, 
 ('bl.spamcop.net', 'ip', 'rbl', 'Automated listings from user submitted spam reports.', 'http://www.spamcop.net/', '0000-00-00 00:00:00', '3', '0', 0, 0, 0, 0),
 ('bl.spameatingmonkey.net', 'ip', 'rbl', 'Listing entered by list reported by trusted users and IPs sending mail to a spamtraps.  IPs from spam traps are automatically expired after 7 days of inactivity.', 'http://spameatingmonkey.com/', '0000-00-00 00:00:00', '2', '0', 0, 0, 0, 0),
 ('bl.tiopan.com', 'ip', 'rbl', 'Unknown - proprietary', 'http://www.tiopan.com/blacklist.php', '0000-00-00 00:00:00', '2', '0', 0, 0, 0, 0),
-('blackholes.five-ten-sg.com', 'ip', 'rbl', 'List has shut down.', 'http://www.five-ten-sg.com/blackhole.php', '0000-00-00 00:00:00', '1', '1', 0, 0, 0, 0),
-('blackholes.intersil.net', 'ip', 'rbl', 'List has shut down.', 'https://www.google.com/search?q=blackholes.intersil.net', '0000-00-00 00:00:00', '1', '1', 0, 0, 0, 0),
+('blackholes.five-ten-sg.com', 'ip', 'rbl', 'List has shut down.', 'http://www.five-ten-sg.com/blackhole.php', '0000-00-00 00:00:00', '1', '0', 0, 0, 0, 0),
+('blackholes.intersil.net', 'ip', 'rbl', 'List has shut down.', 'https://www.google.com/search?q=blackholes.intersil.net', '0000-00-00 00:00:00', '0', '1', 0, 0, 0, 0),
 ('bogons.cymru.com', 'ip', 'rbl', 'Filters IPs that aren''t allocated by ARIN.  Legitimately acquired ips will never show up on this list.  There''s no point of monitoring it if you have valid IPs.', 'https://www.team-cymru.org/Services/Bogons/', '0000-00-00 00:00:00', '1', '0', 0, 0, 0, 0),
 ('cbl.abuseat.org', 'ip', 'rbl', 'Spam traps and administrator listings.', 'http://cbl.abuseat.org/', '0000-00-00 00:00:00', '2', '0', 0, 0, 0, 0),
 ('cbl.anti-spam.org.cn', 'ip', 'rbl', 'Chinese Anti-Spam Alliance blacklist service', 'http://www.anti-spam.org.cn/', '0000-00-00 00:00:00', '2', '0', 0, 0, 0, 0),
-('combined.njabl.org', 'ip', 'rbl', 'List has shut down.', 'https://www.google.com/search?q=combined.njabl.org', '0000-00-00 00:00:00', '1', '1', 0, 0, 0, 0),
+('combined.njabl.org', 'ip', 'rbl', 'List has shut down.', 'https://www.google.com/search?q=combined.njabl.org', '0000-00-00 00:00:00', '1', '0', 0, 0, 0, 0),
 ('db.wpbl.info', 'ip', 'rbl', 'Fully automated.  IPs automatically removed after a time.', 'http://wpbl.info/', '0000-00-00 00:00:00', '2', '0', 0, 0, 0, 0),
 ('dbl.spamhaus.org', 'domain', 'rbl', 'This mostly automated blacklist is usually activated by mailing invalid seed email addresses that are operated by spamhaus.  Your domain will usually be automatically removed from this list unless you continue to email their spam traps.  Then they will escalate the issue to larger blocks.', 'http://www.spamhaus.org/dbl/', '0000-00-00 00:00:00', '3', '1', 0, 0, 0, 0),
 ('dbl.tiopan.com', 'domain', 'rbl', 'Unknown - proprietary', 'http://www.tiopan.com/blacklist.php', '0000-00-00 00:00:00', '2', '0', 0, 0, 0, 0),
@@ -137,6 +137,15 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`username`, `passwd`, `apiKey`, `lastUpdate`, `lastChecked`, `beenChecked`, `lastRunTime`, `disableEmailNotices`, `twitterHandle`, `checkFrequency`, `noticeEmailAddresses`, `textMessageEmails`, `apiCallbackURL`, `ips`, `domains`) VALUES
 ('admin', '97bf34d31a8710e6b1649fd33357f783', '', '2015-06-02 16:37:02', '2015-06-02 16:22:55', 1, 4, 0, '', '2hour', '', '', '', '', '');
 
+
+DROP TABLE IF EXISTS `monitorGroup`;
+CREATE TABLE IF NOT EXISTS `monitorGroup` (
+  `id` int(11) NOT NULL,
+  `groupName` varchar(100) NOT NULL,
+  `ips` longtext NOT NULL,
+  `domains` longtext NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 --
 -- Indexes for table `blockLists`
 --
@@ -160,7 +169,8 @@ ALTER TABLE `monitors`
   ADD KEY `beenChecked` (`beenChecked`),
   ADD KEY `isBlocked` (`isBlocked`),
   ADD KEY `lastUpdate` (`lastUpdate`),
-  ADD KEY `isDomain` (`isDomain`);
+  ADD KEY `isDomain` (`isDomain`),
+  ADD KEY `monitorGroupId` (`monitorGroupId`);
 
 --
 -- Indexes for table `users`
@@ -168,3 +178,12 @@ ALTER TABLE `monitors`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`username`);
 
+--
+-- Indexes for table `monitorGroup`
+--
+ALTER TABLE `monitorGroup`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `groupName` (`groupName`);
+
+ALTER TABLE `monitorGroup`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;

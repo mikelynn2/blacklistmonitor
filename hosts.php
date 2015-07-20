@@ -6,6 +6,7 @@ class_exists('_MySQL', false) or include('classes/_MySQL.class.php');
 $searchS = array_key_exists('searchS', $_GET) ? trim($_GET['searchS']) : '';
 $oc = array_key_exists('oc', $_GET) ? (int)$_GET['oc'] : 4;
 $hostType = array_key_exists('ht', $_GET) ? $_GET['ht'] : 'all';
+$monitorGroupId = array_key_exists('monitorGroupId', $_GET) ? (int)$_GET['monitorGroupId'] : 0;
 $limit = array_key_exists('l', $_GET) ? (int)$_GET['l'] : 100;
 
 if(Utilities::isLoggedIn()===false){
@@ -41,6 +42,8 @@ switch($oc){
 		break;
 }
 
+if($monitorGroupId != 0) $searchSQL .= " and monitorGroupId = $monitorGroupId ";
+
 switch($hostType){
 	case 'domains':
 		$hostTypeSQL .= " and isDomain = 1 ";
@@ -57,21 +60,22 @@ if($searchS != ''){
 		or status like '%".$mysql->escape($searchS)."%' ) "; 
 }
 $sql = "
-select isBlocked,lastUpdate,ipDomain,lastStatusChangeTime,rDNS,status
-from monitors
+select m.isBlocked, m.lastUpdate, m.ipDomain, m.lastStatusChangeTime, m.rDNS, m.status, g.groupName, g.id
+from monitors m 
+	inner join monitorGroup g on g.id = m.monitorGroupId
 where 1=1 $hostTypeSQL $searchSQL
 $orderSQL
 $limitSQL
 ";
+
 $rs = $mysql->runQuery($sql);
 
 include('header.inc.php');
 include('accountSubnav.inc.php');
 
 
-$hostsCount = Utilities::getHostCount($mysql);
-$hostsCountError = Utilities::getHostErrorCount($mysql);
-
+$hostsCount = Utilities::getHostCount($mysql, $monitorGroupId);
+$hostsCountError = Utilities::getHostErrorCount($mysql, $monitorGroupId);
 ?>
 
 <script src="js/jquery.tablesorter.min.js"></script>
@@ -156,6 +160,7 @@ $(document).ready(function() {
 			<input type="text" class="form-control input-sm" id="searchS" name="searchS" placeholder="search" value="<?php echo($searchS);?>">
 		</div>
 		<button type="submit" class="btn btn-default">Go</button>
+		<input type="hidden" name="monitorGroupId" value="<?php echo($monitorGroupId); ?>">
 	</form>
 </div>
 
@@ -164,6 +169,7 @@ $(document).ready(function() {
 		<thead>
 			<tr>
 				<th style="white-space: nowrap">Host</th>
+				<th>Group</th>
 				<th style="white-space: nowrap">Last Checked</th>
 				<th style="white-space: nowrap">Last Change</th>
 				<th>DNS</th>
@@ -175,6 +181,7 @@ $(document).ready(function() {
 		while($row = mysqli_fetch_array($rs, MYSQL_ASSOC)){
 			echo('<tr>');
 			echo('<td><a href="hostHistory.php?host='.urlencode($row['ipDomain']).'">'.$row['ipDomain'].'</a></td>');
+			echo('<td><a href="editHostGroup.php?id='.$row['id'].'">'.$row['groupName'].'</a></td>');
 			if('0000-00-00 00:00:00'==$row['lastUpdate']){
 				echo('<td style="white-space: nowrap">'.Utilities::$hostNotCheckedMessage.'</td>');
 				echo('<td style="white-space: nowrap">'.Utilities::$hostNotCheckedMessage.'</td>');

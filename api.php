@@ -9,6 +9,8 @@ $passwd = array_key_exists('passwd', $_POST) ? trim($_POST['passwd']) : '';
 $apiKey = array_key_exists('apiKey', $_POST) ? trim($_POST['apiKey']) : '';
 $type = array_key_exists('type', $_POST) ? trim($_POST['type']) : '';
 $data = array_key_exists('data', $_POST) ? trim($_POST['data']) : '';
+$groupName = array_key_exists('groupName', $_POST) ? trim($_POST['groupName']) : '';
+
 
 $result = array(
 	'status'=>'',
@@ -23,12 +25,22 @@ if($id == 0) {
 
 switch($type){
 	case 'updateDomains':
-		Utilities::updateDomains($data);
+		if($groupName=='') {
+			$result['status'] = 'groupName is required';
+			break;
+		}
+		$id = Utilities::ensureGroupExists($groupName);
+		Utilities::updateDomains($data, $id);
 		$result['status'] = 'success';
 		break;
 
 	case 'updateIPs':
-		Utilities::updateIPs($data);
+		if($groupName=='') {
+			$result['status'] = 'groupName is required';
+			break;
+		}
+		$id = Utilities::ensureGroupExists($groupName);
+		Utilities::updateIPs($data, $id);
 		$result['status'] = 'success';
 		break;
 
@@ -36,6 +48,14 @@ switch($type){
 		$result['status'] = 'success';
 		Utilities::setBlockLists();
 		$result['result'] = Utilities::checkBlacklists($data);
+		break;
+
+	case 'clearAllHostAndGroupData':
+		$mysql = new _MySQL();
+		$mysql->connect(Setup::$connectionArray);
+		$mysql->runQuery("truncate table monitors");
+		$mysql->runQuery("truncate table monitorGroup");
+		$result['status'] = 'success';
 		break;
 
 	case 'blacklistStatus':

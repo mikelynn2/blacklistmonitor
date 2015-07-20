@@ -179,12 +179,27 @@ class Utilities {
 		$mysql->close();
 	}
 
-	public static function updateDomains($domains){
-		$domains = trim($domains);
+	public static function ensureGroupExists($groupName){
 		$mysql = new _MySQL();
 		$mysql->connect(Setup::$connectionArray);
-		$mysql->runQuery("update monitors set keepOnUpdate = 0 where isDomain = 1");
-		$mysql->runQuery("update users set lastUpdate = '".$mysql->escape(date('Y-m-d H:i:s'))."', domains = '".$mysql->escape($domains)."'");
+		$id = $mysql->runQueryReturnVar("select id from monitorGroup where groupName = '".$mysql->escape($groupName)."'");
+		if($id===false){
+			$mysql->runQuery("insert into monitorGroup set groupName = '".$mysql->escape($groupName)."'");
+			$id = $mysql->identity;
+		}
+		$mysql->close();
+		return $id;
+	}
+
+	public static function updateDomains($domains, $monitorGroupId){
+		$domains = trim($domains);
+		$monitorGroupId = (int)$monitorGroupId;
+		if($monitorGroupId===0) return false;
+		$mysql = new _MySQL();
+		$mysql->connect(Setup::$connectionArray);
+		$mysql->runQuery("update monitors set keepOnUpdate = 0 where isDomain = 1 and monitorGroupId = $monitorGroupId");
+		$mysql->runQuery("update users set lastUpdate = '".$mysql->escape(date('Y-m-d H:i:s'))."'");
+		$mysql->runQuery("update monitorGroup set domains = '".$mysql->escape($domains)."' where id = $monitorGroupId");
 		$domainArray = preg_split('/\s+/', $domains);
 		foreach($domainArray as $d){
 			$d = trim($d);
@@ -197,11 +212,13 @@ class Utilities {
 					update monitors set
 						keepOnUpdate = 1
 					where
-						ipDomain = '".$mysql->escape($d)."'
+						monitorGroupId = $monitorGroupId
+						and ipDomain = '".$mysql->escape($d)."'
 						and isDomain = 1
 				");
 				if($mysql->affectedRows == 0){
 					$mysql->runQuery("insert ignore into monitors set
+					monitorGroupId = $monitorGroupId,
 					ipDomain = '".$mysql->escape($d)."',
 					isDomain = 1,
 					keepOnUpdate = 1
@@ -209,16 +226,19 @@ class Utilities {
 				}
 			}
 		}
-		$mysql->runQuery("delete from monitors where keepOnUpdate = 0 and isDomain = 1");
+		$mysql->runQuery("delete from monitors where keepOnUpdate = 0 and isDomain = 1 and monitorGroupId = $monitorGroupId");
 		$mysql->close();
 	}
 
-	public static function updateIPs($ips){
+	public static function updateIPs($ips, $monitorGroupId){
 		$ips = trim($ips);
+		$monitorGroupId = (int)$monitorGroupId;
+		if($monitorGroupId===0) return false;
 		$mysql = new _MySQL();
 		$mysql->connect(Setup::$connectionArray);
-		$mysql->runQuery("update monitors set keepOnUpdate = 0 where isDomain = 0");
-		$mysql->runQuery("update users set lastUpdate = '".$mysql->escape(date('Y-m-d H:i:s'))."', ips = '".$mysql->escape($ips)."'");
+		$mysql->runQuery("update monitors set keepOnUpdate = 0 where isDomain = 0 and monitorGroupId = $monitorGroupId");
+		$mysql->runQuery("update users set lastUpdate = '".$mysql->escape(date('Y-m-d H:i:s'))."'");
+		$mysql->runQuery("update monitorGroup set ips = '".$mysql->escape($ips)."' where id = $monitorGroupId");
 		$ipsArray  = preg_split('/\s+/', $ips);
 		foreach($ipsArray as $i){
 			// ip checks
@@ -227,11 +247,13 @@ class Utilities {
 					update monitors set
 					keepOnUpdate = 1
 					where
-						ipDomain = '".$mysql->escape($i)."'
+						monitorGroupId = $monitorGroupId
+						and ipDomain = '".$mysql->escape($i)."'
 						and isDomain = 0
 					");
 				if($mysql->affectedRows == 0){
 					$mysql->runQuery("insert ignore into monitors set
+						monitorGroupId = $monitorGroupId,
 						ipDomain = '".$mysql->escape($i)."', 
 						isDomain = 0,
 						keepOnUpdate = 1
@@ -254,11 +276,13 @@ class Utilities {
 								update monitors set
 									keepOnUpdate = 1
 									where
-										ipDomain = '".$mysql->escape($host)."'
+										monitorGroupId = $monitorGroupId
+										and ipDomain = '".$mysql->escape($host)."'
 										and isDomain = 0
 								");
 							if($mysql->affectedRows == 0){
 								$mysql->runQuery("insert ignore into monitors set
+									monitorGroupId = $monitorGroupId,
 									ipDomain = '".$mysql->escape($host)."',
 									isDomain = 0,
 									keepOnUpdate = 1
@@ -269,7 +293,7 @@ class Utilities {
 				}
 			}
 		}
-		$mysql->runQuery("delete from monitors where keepOnUpdate = 0 and isDomain = 0");
+		$mysql->runQuery("delete from monitors where keepOnUpdate = 0 and isDomain = 0 and monitorGroupId = $monitorGroupId");
 		$mysql->close();
 	}
 
@@ -291,8 +315,6 @@ class Utilities {
 				passwd,
 				apiKey,
 				beenChecked,
-				ips,
-				domains,
 				disableEmailNotices,
 				noticeEmailAddresses,
 				textMessageEmails,
@@ -447,16 +469,32 @@ class Utilities {
 		return $ipDomain;
 	}
 
-	public static function getHostChangeCount($mysql) {
-		return $mysql->runQueryReturnVar("select COALESCE(count(ipDomain),0) as cnt from monitors where lastStatusChanged = 1");
+	public static function getHostChangeCount($mysql, $monitorGroupId = 0) {
+		$sql = '';
+		$monitorGroupId = (int)$monitorGroupId;
+		if($monitorGroupId > 0) $sql = " and monitorGroupId = $monitorGroupId";
+		return $mysql->runQueryReturnVar("select COALESCE(count(ipDomain),0) as cnt from monitors where lastStatusChanged = 1 $sql");
 	}
 
-	public static function getHostErrorCount($mysql) {
-		return $mysql->runQueryReturnVar("select COALESCE(count(ipDomain),0) as cnt from monitors where isBlocked = 1");
+	public static function getHostErrorCount($mysql, $monitorGroupId = 0) {
+		$sql = '';
+		$monitorGroupId = (int)$monitorGroupId;
+		if($monitorGroupId > 0) $sql = " and monitorGroupId = $monitorGroupId";
+		return $mysql->runQueryReturnVar("select COALESCE(count(ipDomain),0) as cnt from monitors where isBlocked = 1 $sql");
 	}
 
-	public static function getHostCount($mysql) {
-		return $mysql->runQueryReturnVar("select COALESCE(count(ipDomain),0) as cnt from monitors");
+	public static function getHostCleanCount($mysql, $monitorGroupId = 0) {
+		$sql = '';
+		$monitorGroupId = (int)$monitorGroupId;
+		if($monitorGroupId > 0) $sql = " and monitorGroupId = $monitorGroupId";
+		return $mysql->runQueryReturnVar("select COALESCE(count(ipDomain),0) as cnt from monitors where isBlocked = 0 $sql");
+	}
+
+	public static function getHostCount($mysql, $monitorGroupId = 0) {
+		$sql = '';
+		$monitorGroupId = (int)$monitorGroupId;
+		if($monitorGroupId > 0) $sql = " where monitorGroupId = $monitorGroupId";
+		return $mysql->runQueryReturnVar("select COALESCE(count(ipDomain),0) as cnt from monitors $sql");
 	}
 
 	//CREDIT: http://braincrafted.com/php-background-processes/
