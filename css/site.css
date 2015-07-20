@@ -4,8 +4,7 @@ body {
 }
 
 .header,.marketing,.footer {
-	padding-left: 15px;
-	padding-right: 15px;
+	padding-bottom: 10px;
 }
 
 .header h3 {
