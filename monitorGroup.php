@@ -50,6 +50,7 @@ $(document).ready(function() {
 				<th style="white-space: nowrap">Monitor Group</th>
 				<th style="white-space: nowrap">Total Hosts</th>
 				<th style="white-space: nowrap">Total Blocks</th>
+				<th style="white-space: nowrap">% Blocked</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -57,8 +58,11 @@ $(document).ready(function() {
 		while($row = mysqli_fetch_array($rs, MYSQL_ASSOC)){
 			echo('<tr>');
 			echo('<td><a href="hosts.php?monitorGroupId='.$row['id'].'"><div class="glyphicon glyphicon-stats glyphicon-stats-lg"></div></a> &nbsp; <a href="editHostGroup.php?id='.urlencode($row['id']).'">'.$row['groupName'].'</a></td>');
-			echo('<td>'.$row['hostCount'].'</td>');
-			echo('<td>'.$row['hostCountError'].'</td>');
+			echo('<td>'.number_format($row['hostCount'],0).'</td>');
+			echo('<td>'.number_format($row['hostCountError'],0).'</td>');
+			
+			
+			echo('<td>'.number_format((($row['hostCount']>0) ? ($row['hostCountError']/$row['hostCount']*100) : 0),1).'</td>');
 			echo('</tr>');
 		}
 		$mysql->close();
