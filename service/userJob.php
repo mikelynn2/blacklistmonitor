@@ -86,7 +86,7 @@ if($hostsChanged > 0 && $user['disableEmailNotices']==0){
 	$summaryText = "";
 	$noticeMessage = "";
 	$url = Setup::$settings['base_url'];
-	$table .= "<br><br><div><a href='$url/hosts.php?oc=1'>Hosts with status changes</a> | <a href='$url/hosts.php?oc=2'>Blocked Hosts</a> | <a href='$url/hosts.php'>All hosts</a></div><br><br>";
+	$table .= "<br><br><div><a href='$url/m.php'>Monitor Groups</a></div><br><br>";
 
 	$summary .= "<div><strong>";
 	$summary .= "Total: ".number_format($monitorCount)."<br/>";
@@ -137,7 +137,7 @@ if($hostsChanged > 0 && $user['disableEmailNotices']==0){
 		}
 		$mail->Subject = Setup::$settings['alert_subject_sms'];
 		$mail->isHtml(false);
-		$mail->Body = "$url/hosts.php?oc=1 $summaryText";
+		$mail->Body = "$url/m.php $summaryText";
 		$mail->Send();
 	}
 	
