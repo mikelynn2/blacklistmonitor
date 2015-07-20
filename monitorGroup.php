@@ -18,7 +18,8 @@ $mysql->connect(Setup::$connectionArray);
 $sql = "
 select g.*,
 	(select count(*) from monitors where g.id = monitorGroupId) as hostCount,
-	(select count(*) from monitors where isBlocked = 1 and g.id = monitorGroupId) as hostCountError
+	(select count(*) from monitors where isBlocked = 1 and g.id = monitorGroupId) as hostCountError,
+	(select count(*) from monitors where lastStatusChanged = 1 and isBlocked = 1 and g.id = monitorGroupId) as hostRecentBlock
 from monitorGroup g
 order by g.groupName
 ";
@@ -50,6 +51,7 @@ $(document).ready(function() {
 				<th style="white-space: nowrap">Monitor Group</th>
 				<th style="white-space: nowrap">Total Hosts</th>
 				<th style="white-space: nowrap">Total Blocks</th>
+				<th style="white-space: nowrap">Last Change New Blocks</th>
 				<th style="white-space: nowrap">% Blocked</th>
 			</tr>
 		</thead>
@@ -60,8 +62,7 @@ $(document).ready(function() {
 			echo('<td><a href="hosts.php?monitorGroupId='.$row['id'].'"><div class="glyphicon glyphicon-stats glyphicon-stats-lg"></div></a> &nbsp; <a href="editHostGroup.php?id='.urlencode($row['id']).'">'.$row['groupName'].'</a></td>');
 			echo('<td>'.number_format($row['hostCount'],0).'</td>');
 			echo('<td>'.number_format($row['hostCountError'],0).'</td>');
-			
-			
+			echo('<td>'.number_format($row['hostRecentBlock'],0).'</td>');
 			echo('<td>'.number_format((($row['hostCount']>0) ? ($row['hostCountError']/$row['hostCount']*100) : 0),1).'</td>');
 			echo('</tr>');
 		}
