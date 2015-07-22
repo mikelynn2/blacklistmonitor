@@ -73,7 +73,7 @@ crontab -e
 
 ## Service
 ```
-cp /var/www/html/blacklistmonitor/setup/blacklistmonitor-ubuntu-upstart.conf /etc/init/
+cp /var/www/html/blacklistmonitor/setup/blacklistmonitor-ubuntu-upstart.conf /etc/init/blacklistmonitor.conf
 ```
 
 ### start/stop/restart
