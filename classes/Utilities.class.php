@@ -97,22 +97,26 @@ class Utilities {
 			true);
 		$testArray = explode("\t", $test);
 		$test = end($testArray);
-		if(trim($test)!=''){
-			$t = "dig @".self::randomDNSServer()." +time=".Setup::$settings['dns_request_timeout']." $host txt";
-	//		echo("$t</br>");
-			$text = shell_exec($t);
-			$test = Utilities::parseBetweenText(
-				$text,
-				";; ANSWER SECTION:\n", 
-				"\n\n",
-				false,
-				false,
-				true);
-			$testArray = explode("\t", $test);
-			$test = end($testArray);
-			$test = str_replace(array('\'','"'),'',$test);
-		}
 
+		if(trim($test)!=''){
+			if(Setup::$settings['rbl_txt_extended_status']){
+				$t = "dig @".self::randomDNSServer()." +time=".Setup::$settings['dns_request_timeout']." $host txt";
+		//		echo("$t</br>");
+				$text = shell_exec($t);
+				$test = Utilities::parseBetweenText(
+					$text,
+					";; ANSWER SECTION:\n", 
+					"\n\n",
+					false,
+					false,
+					true);
+				$testArray = explode("\t", $test);
+				$test = end($testArray);
+				$test = str_replace(array('\'','"'),'',$test);
+			}else{
+				$test = 'blocked';
+			}
+		}
 		if(strripos($test,'not found')!==false) return '';
 		if(strripos($test,'SERVFAIL')!==false) return '';
 		return trim($test);
@@ -140,26 +144,30 @@ class Utilities {
 		$test = trim(end($testArray));
 		//		echo "<pre>$test</pre>\n";
 		if(trim($test)!=''){
-			$t = "dig @".self::randomDNSServer()." +time=".Setup::$settings['dns_request_timeout']." $host txt";
-	//		echo("$t</br>");
-			$text = shell_exec($t);
-			$test2 = Utilities::parseBetweenText(
-				$text,
-				";; ANSWER SECTION:\n",
-				"\n\n",
-				false,
-				false,
-				true);
-			$testArray = preg_split("/IN\s+TXT\s+/i", $test2);
-			$test2 = trim(end($testArray));
-			$test2 = str_replace(array('\'','"'),'',$test2);
-			switch($server){
-				case 'bl.mailspike.net':
-					$a = explode("|",$test2);
-					$test = (isset($a[1])) ? 'Listed ' . $a[1] : $test2;
-				break;
+			if(Setup::$settings['rbl_txt_extended_status']){
+				$t = "dig @".self::randomDNSServer()." +time=".Setup::$settings['dns_request_timeout']." $host txt";
+		//		echo("$t</br>");
+				$text = shell_exec($t);
+				$test2 = Utilities::parseBetweenText(
+					$text,
+					";; ANSWER SECTION:\n",
+					"\n\n",
+					false,
+					false,
+					true);
+				$testArray = preg_split("/IN\s+TXT\s+/i", $test2);
+				$test2 = trim(end($testArray));
+				$test2 = str_replace(array('\'','"'),'',$test2);
+				switch($server){
+					case 'bl.mailspike.net':
+						$a = explode("|",$test2);
+						$test = (isset($a[1])) ? 'Listed ' . $a[1] : $test2;
+					break;
+				}
+				if($test2!='') $test = $test2;
+			}else{
+				$test = 'blocked';
 			}
-			if($test2!='') $test = $test2;
 		}
 		if(strripos($test,'not found')!==false) return '';
 		if(strripos($test,'SERVFAIL')!==false) return '';

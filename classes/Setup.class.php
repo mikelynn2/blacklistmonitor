@@ -20,6 +20,14 @@ class Setup {
 			self::$settings = $cfg;
 			self::$settings['dns_servers'] = explode(',',$cfg['dns_servers']);
 
+			// clean up
+			if(Setup::$settings['rbl_txt_extended_status']=='true' ||
+			  Setup::$settings['rbl_txt_extended_status']=='1'){
+				Setup::$settings['rbl_txt_extended_status'] = true;
+			}else{
+				Setup::$settings['rbl_txt_extended_status'] = false;
+			}
+
 			self::$connectionArray = array(
 				$cfg['db_host'],
 				$cfg['db_username'],
