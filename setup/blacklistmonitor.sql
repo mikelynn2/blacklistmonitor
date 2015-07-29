@@ -104,6 +104,7 @@ CREATE TABLE IF NOT EXISTS `monitors` (
   `lastUpdate` datetime NOT NULL,
   `isBlocked` tinyint(1) NOT NULL DEFAULT '0',
   `lastStatusChanged` tinyint(1) NOT NULL DEFAULT '0',
+  `monitorGroupId` int(11) NOT NULL DEFAULT '0',
   `keepOnUpdate` tinyint(1) NOT NULL DEFAULT '1',
   `lastStatusChangeTime` datetime NOT NULL,
   `rDNS` varchar(200) NOT NULL,
