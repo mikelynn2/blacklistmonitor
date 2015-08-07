@@ -78,6 +78,8 @@ $mysql->runQuery("update users set beenChecked = 1, lastChecked = '".date('Y-m-d
 
 $hostsChanged = Utilities::getHostChangeCount($mysql);
 $errorHosts = Utilities::getHostErrorCount($mysql);
+$newErrorHosts = Utilities::getHostErrorCount($mysql, 0, true);
+$newCleanHosts = Utilities::getHostCleanCount($mysql, 0, true);
 
 
 if($hostsChanged > 0 && $user['disableEmailNotices']==0){
@@ -86,20 +88,22 @@ if($hostsChanged > 0 && $user['disableEmailNotices']==0){
 	$summaryText = "";
 	$noticeMessage = "";
 	$url = Setup::$settings['base_url'];
-	$table .= "<br><br><div><a href='$url/m.php'>Monitor Groups</a></div><br><br>";
+	$table .= "<br><div><a href='$url/m.php'>Monitor Groups</a></div><br>";
 
 	$summary .= "<div><strong>";
 	$summary .= "Total: ".number_format($monitorCount)."<br/>";
 	$summary .= "Clean: ".number_format(($monitorCount-$errorHosts))."<br/>";
 	$summary .= "Blocked: ".number_format($errorHosts)."<br/>";
-	$summary .= "Changed: ".number_format($hostsChanged)."<br/>";
+	$summary .= "New Blocked: ".number_format($newErrorHosts)."<br/>";
+	$summary .= "New Clean: ".number_format($newCleanHosts)."<br/>";
 	$summary .= '</a>';
 	$summary .= "</strong></div>";
 	
 	$summaryText .= "Total: ".number_format($monitorCount)."\n";
 	$summaryText .= "Clean: ".number_format(($monitorCount-$errorHosts))."\n";
 	$summaryText .= "Blocked: ".number_format($errorHosts)."\n";
-	$summaryText .= "Changed: ".number_format($hostsChanged)."\n";
+	$summaryText .= "New Blocked: ".number_format($newErrorHosts)."\n";
+	$summaryText .= "New Clean: ".number_format($newCleanHosts)."\n";
 
 	$footer = "<br/><div><a href='$url/account.php'>Manage your account</a></div>";
 
