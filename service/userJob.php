@@ -75,7 +75,7 @@ $lastRunTime = (int)$m->runTime;
 // mark this one as ran
 $mysql->runQuery("update users set beenChecked = 1, lastChecked = '".date('Y-m-d H:i:s')."', lastRunTime = $lastRunTime");
 
-
+// basic stats
 $hostsChanged = Utilities::getHostChangeCount($mysql);
 $errorHosts = Utilities::getHostErrorCount($mysql);
 $newErrorHosts = Utilities::getHostErrorCount($mysql, 0, true);
@@ -88,7 +88,6 @@ if($hostsChanged > 0 && $user['disableEmailNotices']==0){
 	$summaryText = "";
 	$noticeMessage = "";
 	$url = Setup::$settings['base_url'];
-	$table .= "<br><div><a href='$url/m.php'>Monitor Groups</a></div><br>";
 
 	$summary .= "<div><strong>";
 	$summary .= "Total: ".number_format($monitorCount)."<br/>";
@@ -98,14 +97,33 @@ if($hostsChanged > 0 && $user['disableEmailNotices']==0){
 	$summary .= "New Clean: ".number_format($newCleanHosts)."<br/>";
 	$summary .= '</a>';
 	$summary .= "</strong></div>";
-	
+
+	$summary .= "<br><div><a href='$url/m.php'>Monitor Groups</a></div><br>";
+
+	if( (isset(Setup::$settings['email_report_detailed_host_changes']))
+		&& (Setup::$settings['email_report_detailed_host_changes']==true) ){
+			$table .= '<hr>';
+			$table .= '<strong>New Blocks</strong><br>';
+			$rs = $mysql->runQuery("select ipDomain FROM monitors where  isBlocked = 1 and lastStatusChanged = 1 order by isDomain desc, ipDomain");
+			while($row = mysqli_fetch_array($rs, MYSQL_ASSOC)){
+				$table .= '<a href="'.$url.'"/hostHistory.php?host='.urlencode($row['ipDomain']).'">'.$row['ipDomain'].'</a><br>';
+			}
+			$table .= '<br><br>';
+			$table .= '<hr>';
+			$table .= '<strong>New Clean</strong><br>';
+			$rs = $mysql->runQuery("select ipDomain FROM monitors where isBlocked = 0 and lastStatusChanged = 1 order by isDomain desc, ipDomain");
+			while($row = mysqli_fetch_array($rs, MYSQL_ASSOC)){
+				$table .= '<a href="'.$url.'"/hostHistory.php?host='.urlencode($row['ipDomain']).'">'.$row['ipDomain'].'</a><br>';
+			}
+	}
+
+	$footer = "<br/><div><a href='$url/account.php'>Manage your account</a></div>";
+
 	$summaryText .= "Total: ".number_format($monitorCount)."\n";
 	$summaryText .= "Clean: ".number_format(($monitorCount-$errorHosts))."\n";
 	$summaryText .= "Blocked: ".number_format($errorHosts)."\n";
 	$summaryText .= "New Blocked: ".number_format($newErrorHosts)."\n";
 	$summaryText .= "New Clean: ".number_format($newCleanHosts)."\n";
-
-	$footer = "<br/><div><a href='$url/account.php'>Manage your account</a></div>";
 
 	$e = explode("\n",$user['noticeEmailAddresses']);
 	if( (count($e) > 0) && (Setup::$settings['smtp_server']!='') ){
