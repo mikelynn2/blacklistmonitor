@@ -75,9 +75,11 @@ $lastRunTime = (int)$m->runTime;
 // mark this one as ran
 $mysql->runQuery("update users set beenChecked = 1, lastChecked = '".date('Y-m-d H:i:s')."', lastRunTime = $lastRunTime");
 
-
+// basic stats
 $hostsChanged = Utilities::getHostChangeCount($mysql);
 $errorHosts = Utilities::getHostErrorCount($mysql);
+$newErrorHosts = Utilities::getHostErrorCount($mysql, 0, true);
+$newCleanHosts = Utilities::getHostCleanCount($mysql, 0, true);
 
 
 if($hostsChanged > 0 && $user['disableEmailNotices']==0){
@@ -86,22 +88,50 @@ if($hostsChanged > 0 && $user['disableEmailNotices']==0){
 	$summaryText = "";
 	$noticeMessage = "";
 	$url = Setup::$settings['base_url'];
-	$table .= "<br><br><div><a href='$url/m.php'>Monitor Groups</a></div><br><br>";
 
 	$summary .= "<div><strong>";
 	$summary .= "Total: ".number_format($monitorCount)."<br/>";
 	$summary .= "Clean: ".number_format(($monitorCount-$errorHosts))."<br/>";
 	$summary .= "Blocked: ".number_format($errorHosts)."<br/>";
-	$summary .= "Changed: ".number_format($hostsChanged)."<br/>";
+	$summary .= "New Blocked: ".number_format($newErrorHosts)."<br/>";
+	$summary .= "New Clean: ".number_format($newCleanHosts)."<br/>";
 	$summary .= '</a>';
 	$summary .= "</strong></div>";
-	
+
+	$summary .= "<br><div><a href='$url/m.php'>Monitor Groups</a></div><br>";
+
+	if( (isset(Setup::$settings['email_report_detailed_host_changes']))
+		&& (Setup::$settings['email_report_detailed_host_changes']==true) ){
+			$table .= '<hr>';
+			$table .= '<strong>New Blocks</strong><br>';
+			$rs = $mysql->runQuery("select m.ipDomain, mg.groupName FROM monitors m inner join monitorGroup mg on mg.id = m.monitorGroupId where m.isBlocked = 1 and m.lastStatusChanged = 1 order by m.isDomain desc, m.ipDomain");
+			$table .= '<table width="100%">';
+			while($row = mysqli_fetch_array($rs, MYSQL_ASSOC)){
+				$table .= '<tr>';
+				$table .= '<td><a href="'.$url.'"/hostHistory.php?host='.urlencode($row['ipDomain']).'">'.$row['ipDomain'].'</a></td><td>'.$row['groupName'].'</td>';
+				$table .= '</tr>';
+			}
+			$table .= '</table>';
+			$table .= '<br><br>';
+			$table .= '<hr>';
+			$table .= '<strong>New Clean</strong><br>';
+			$rs = $mysql->runQuery("select m.ipDomain, mg.groupName FROM monitors m inner join monitorGroup mg on mg.id = m.monitorGroupId where m.isBlocked = 0 and m.lastStatusChanged = 1 order by m.isDomain desc, m.ipDomain");
+			$table .= '<table width="100%">';
+			while($row = mysqli_fetch_array($rs, MYSQL_ASSOC)){
+				$table .= '<tr>';
+				$table .= '<td><a href="'.$url.'"/hostHistory.php?host='.urlencode($row['ipDomain']).'">'.$row['ipDomain'].'</a></td><td>'.$row['groupName'].'</td>';
+				$table .= '</tr>';
+			}
+			$table .= '</table>';
+	}
+
+	$footer = "<br/><div><a href='$url/account.php'>Manage your account</a></div>";
+
 	$summaryText .= "Total: ".number_format($monitorCount)."\n";
 	$summaryText .= "Clean: ".number_format(($monitorCount-$errorHosts))."\n";
 	$summaryText .= "Blocked: ".number_format($errorHosts)."\n";
-	$summaryText .= "Changed: ".number_format($hostsChanged)."\n";
-
-	$footer = "<br/><div><a href='$url/account.php'>Manage your account</a></div>";
+	$summaryText .= "New Blocked: ".number_format($newErrorHosts)."\n";
+	$summaryText .= "New Clean: ".number_format($newCleanHosts)."\n";
 
 	$e = explode("\n",$user['noticeEmailAddresses']);
 	if( (count($e) > 0) && (Setup::$settings['smtp_server']!='') ){

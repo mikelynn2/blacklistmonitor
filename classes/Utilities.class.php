@@ -484,17 +484,19 @@ class Utilities {
 		return $mysql->runQueryReturnVar("select COALESCE(count(ipDomain),0) as cnt from monitors where lastStatusChanged = 1 $sql");
 	}
 
-	public static function getHostErrorCount($mysql, $monitorGroupId = 0) {
+	public static function getHostErrorCount($mysql, $monitorGroupId = 0, $onlyNew = false) {
 		$sql = '';
 		$monitorGroupId = (int)$monitorGroupId;
 		if($monitorGroupId > 0) $sql = " and monitorGroupId = $monitorGroupId";
+		if($onlyNew) $sql .= " and lastStatusChanged = 1 ";
 		return $mysql->runQueryReturnVar("select COALESCE(count(ipDomain),0) as cnt from monitors where isBlocked = 1 $sql");
 	}
 
-	public static function getHostCleanCount($mysql, $monitorGroupId = 0) {
+	public static function getHostCleanCount($mysql, $monitorGroupId = 0, $onlyNew = false) {
 		$sql = '';
 		$monitorGroupId = (int)$monitorGroupId;
 		if($monitorGroupId > 0) $sql = " and monitorGroupId = $monitorGroupId";
+		if($onlyNew) $sql .= " and lastStatusChanged = 1 ";
 		return $mysql->runQueryReturnVar("select COALESCE(count(ipDomain),0) as cnt from monitors where isBlocked = 0 $sql");
 	}
 
