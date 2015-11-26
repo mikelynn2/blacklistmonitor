@@ -20,7 +20,7 @@ Application for monitoring Domains and IPs on RBLs.  With blacklistmonitor you c
 - Apache or Nginx
 - SMTP Mail server like postfix
 
-## Installation (Ubuntu/mariadb/bind/apache)
+## Installation Ubuntu Server 14.04 LTS
 ```
 #install
 apt-get -y install apache2
