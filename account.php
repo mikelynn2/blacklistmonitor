@@ -186,7 +186,7 @@ foreach($message as $m){
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="col-sm-3 control-label" for="twitterHandle">Twitter Handle <a class="glyphicon glyphicon-info-sign" href="#" data-toggle="popover" data-content="Enables direct message alerts for twitter.  You must follow us on twitter for us to be able to message you."></a></label>
+		<label class="col-sm-3 control-label" for="twitterHandle">Twitter Handle <a class="glyphicon glyphicon-info-sign" href="#" data-toggle="popover" data-content="Enables direct message alerts for twitter."></a></label>
 		<div class="col-sm-6">
 			<div class="input-group">
 				<span class="input-group-addon">@</span>
