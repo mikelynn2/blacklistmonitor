@@ -98,7 +98,7 @@ function toggleBlacklist(host){
 		</thead>
 		<tbody>
 		<?php
-		while($row = mysqli_fetch_array($rs, MYSQL_ASSOC)){
+		while($row = mysqli_fetch_array($rs)){
 			echo('<tr>');
 			echo('<td style="text-align: center;">');
 			if($row['isActive']==0){

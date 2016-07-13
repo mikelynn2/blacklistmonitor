@@ -69,7 +69,7 @@ class _MySQL {
 	public function runQueryReturnVar($query) {
 		$result = false;
 		$rs = $this->runQuery($query." limit 1;");
-		while ($row = mysqli_fetch_array($rs, MYSQL_NUM)) $result = $row[0];
+		while ($row = mysqli_fetch_array($rs)) $result = $row[0];
 		mysqli_free_result($rs);
 		return $result;
 	}

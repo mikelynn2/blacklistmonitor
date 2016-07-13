@@ -62,7 +62,7 @@ $group = array(
 	'domains'=>'',
 );
 $rs = $mysql->runQuery("select * from monitorGroup where id = $id");
-while($row = mysqli_fetch_array($rs, MYSQL_ASSOC)){
+while($row = mysqli_fetch_array($rs)){
 	$group = $row;
 }
 

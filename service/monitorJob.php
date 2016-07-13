@@ -28,7 +28,7 @@ $rs = $mysql->runQuery("
 	select *
 	from monitors
 	where ipDomain = '".$mysql->escape($options['h'])."'");
-while($row = mysqli_fetch_array($rs, MYSQL_ASSOC)) {
+while($row = mysqli_fetch_array($rs)) {
 	$monitor = $row;
 }
 

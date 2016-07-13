@@ -57,7 +57,7 @@ $(document).ready(function() {
 		</thead>
 		<tbody>
 		<?php
-		while($row = mysqli_fetch_array($rs, MYSQL_ASSOC)){
+		while($row = mysqli_fetch_array($rs)){
 			echo('<tr>');
 			echo('<td><a href="hosts.php?monitorGroupId='.$row['id'].'"><div class="glyphicon glyphicon-stats glyphicon-stats-lg"></div></a> &nbsp; <a href="editHostGroup.php?id='.urlencode($row['id']).'">'.$row['groupName'].'</a></td>');
 			echo('<td>'.number_format($row['hostCount'],0).'</td>');

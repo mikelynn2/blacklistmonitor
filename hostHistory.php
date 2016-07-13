@@ -47,7 +47,7 @@ $(document).ready(function() {
 		<?php
 		$data = array();
 		$chartData = '';
-		while($row = mysqli_fetch_array($rs, MYSQL_ASSOC)){
+		while($row = mysqli_fetch_array($rs)){
 			$data[] = $row;
 			$t = date("Y-n-j g a",strtotime($row['monitorTime']));
 			$chartData .= "['$t', ";

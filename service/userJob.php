@@ -61,7 +61,7 @@ while(true){
 		exit();
 	}
 	$rs = $mysql->runQuery("select ipDomain from monitors where beenChecked = 0 limit 1;");
-	if($row = mysqli_fetch_array($rs, MYSQL_ASSOC)){
+	if($row = mysqli_fetch_array($rs)){
 		sleep(4);//wait 4 seconds for them to finish
 	}else{
 		break;
@@ -106,7 +106,7 @@ if($hostsChanged > 0 && $user['disableEmailNotices']==0){
 			$table .= '<strong>New Blocks</strong><br>';
 			$rs = $mysql->runQuery("select m.ipDomain, mg.groupName FROM monitors m inner join monitorGroup mg on mg.id = m.monitorGroupId where m.isBlocked = 1 and m.lastStatusChanged = 1 order by m.isDomain desc, m.ipDomain");
 			$table .= '<table width="100%">';
-			while($row = mysqli_fetch_array($rs, MYSQL_ASSOC)){
+			while($row = mysqli_fetch_array($rs)){
 				$table .= '<tr>';
 				$table .= '<td><a href="'.$url.'"/hostHistory.php?host='.urlencode($row['ipDomain']).'">'.$row['ipDomain'].'</a></td><td>'.$row['groupName'].'</td>';
 				$table .= '</tr>';
@@ -117,7 +117,7 @@ if($hostsChanged > 0 && $user['disableEmailNotices']==0){
 			$table .= '<strong>New Clean</strong><br>';
 			$rs = $mysql->runQuery("select m.ipDomain, mg.groupName FROM monitors m inner join monitorGroup mg on mg.id = m.monitorGroupId where m.isBlocked = 0 and m.lastStatusChanged = 1 order by m.isDomain desc, m.ipDomain");
 			$table .= '<table width="100%">';
-			while($row = mysqli_fetch_array($rs, MYSQL_ASSOC)){
+			while($row = mysqli_fetch_array($rs)){
 				$table .= '<tr>';
 				$table .= '<td><a href="'.$url.'"/hostHistory.php?host='.urlencode($row['ipDomain']).'">'.$row['ipDomain'].'</a></td><td>'.$row['groupName'].'</td>';
 				$table .= '</tr>';

@@ -29,7 +29,7 @@ class Utilities {
 		$rs = $mysql->runQuery($sql);
 		$cacheData['domains'] = array();
 		$cacheData['ips'] = array();
-		while($row = mysqli_fetch_array($rs, MYSQL_ASSOC)){
+		while($row = mysqli_fetch_array($rs)){
 			if($row['monitorType']=='ip'){
 				$cacheData['ips'][] = $row['host'];
 			}else{
@@ -330,7 +330,7 @@ class Utilities {
 				apiCallbackURL,
 				checkFrequency
 			from users limit 1");
-		while($row = mysqli_fetch_array($rs, MYSQL_ASSOC)){
+		while($row = mysqli_fetch_array($rs)){
 			$ret = $row;
 		}
 		$mysql->close();
@@ -359,7 +359,7 @@ class Utilities {
 		}
 		$rs = $mysql->runQuery($sql);
 		$id = 0;
-		while($row = mysqli_fetch_array($rs, MYSQL_ASSOC)){
+		while($row = mysqli_fetch_array($rs)){
 			$id = 1;
 		}
 		$mysql->close();

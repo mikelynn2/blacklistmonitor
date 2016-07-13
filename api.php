@@ -87,7 +87,7 @@ switch($type){
 			where 1=1 $searchSQL");
 		$result['status'] = 'success';
 		$result['result'] = array();
-		while($row = mysqli_fetch_array($rs, MYSQL_ASSOC)){
+		while($row = mysqli_fetch_array($rs)){
 			$result['result'][] = array(
 				'host'=>$row['ipDomain'],
 				'isBlocked'=>$row['isBlocked'],

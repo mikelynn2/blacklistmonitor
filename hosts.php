@@ -178,7 +178,7 @@ $(document).ready(function() {
 		</thead>
 		<tbody>
 		<?php
-		while($row = mysqli_fetch_array($rs, MYSQL_ASSOC)){
+		while($row = mysqli_fetch_array($rs)){
 			echo('<tr>');
 			echo('<td><a href="hostHistory.php?host='.urlencode($row['ipDomain']).'">'.$row['ipDomain'].'</a></td>');
 			echo('<td><a href="editHostGroup.php?id='.$row['id'].'">'.$row['groupName'].'</a></td>');
