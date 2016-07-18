@@ -26,7 +26,7 @@ class_exists('Utilities', false) or include('classes/Utilities.class.php');
 			<?php
 			if(Utilities::isLoggedIn()!==false){
 			?>
-				<li <?php if(in_array($pageName,array('account.php','hosts.php','blockLists.php','apiDocumentation.php','hostHistory.php'))) echo('class="active"');?>><a href="account.php">Account</a></li>
+				<li <?php if(in_array($pageName,array('account.php','hosts.php','blockLists.php','apiDocumentation.php','hostHistory.php'))) echo('class="active"');?>><a href="account.php">Profile</a></li>
 				<li><a href="login.php?logout=1">Logout</a></li>
 			<?php
 			}else{
