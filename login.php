@@ -13,7 +13,7 @@ $message = '';
 
 if($logout==1){
 	session_destroy();
-	echo("<script>window.location='/';</script>");
+	echo("<script>window.location='login.php';</script>");
 	exit();
 }
 
