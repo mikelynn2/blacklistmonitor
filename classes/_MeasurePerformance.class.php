@@ -13,7 +13,7 @@ class _MeasurePerformance {
 	public $avgPerformance = '';
 	public $runTime = 0;
 
-	public function _MeasurePerformance(){
+	public function __construct(){
 		$this->startTime = microtime(true);
 	}
 
