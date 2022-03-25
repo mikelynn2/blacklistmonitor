@@ -472,7 +472,7 @@ class Utilities {
 	 }
 
 	public static function getNextMonitor($mysql){
-		$ipDomain = $mysql->runQueryReturnVar("select ipDomain from monitors where beenChecked = 0");
+		$ipDomain = $mysql->runQueryReturnVar("select ipDomain from monitors where beenChecked = 0 AND isActive = '1'");
 		$mysql->runQuery("update monitors set beenChecked = 1 where ipDomain = '".$mysql->escape($ipDomain)."'");
 		return $ipDomain;
 	}
