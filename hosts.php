@@ -90,7 +90,7 @@ $orderSQL
 $limitSQL
 ";
 
-var_dump($sql);
+
 $rs = $mysql->runQuery($sql);
 
 include('header.inc.php');
