@@ -60,7 +60,7 @@ while(true){
 		_Logging::appLog("parent died - userJob exited");
 		exit();
 	}
-	$rs = $mysql->runQuery("select ipDomain from monitors where beenChecked = 0 limit 1;");
+	$rs = $mysql->runQuery("select ipDomain from monitors where beenChecked = 0 AND isActive = '1' limit 1;");
 	if($row = mysqli_fetch_array($rs)){
 		sleep(4);//wait 4 seconds for them to finish
 	}else{
