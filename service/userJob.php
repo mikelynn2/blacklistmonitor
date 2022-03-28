@@ -104,7 +104,7 @@ if($hostsChanged > 0 && $user['disableEmailNotices']==0){
 		&& (Setup::$settings['email_report_detailed_host_changes']==true) ){
 			$table .= '<hr>';
 			$table .= '<strong>New Blocks</strong><br>';
-			$rs = $mysql->runQuery("select m.ipDomain, mg.groupName FROM monitors m inner join monitorGroup mg on mg.id = m.monitorGroupId where m.isBlocked = 1 and m.lastStatusChanged = 1 order by m.isDomain desc, m.ipDomain");
+			$rs = $mysql->runQuery("select m.ipDomain, mg.groupName FROM monitors m inner join monitorGroup mg on mg.id = m.monitorGroupId where m.isBlocked = 1 and m.lastStatusChanged = 1 and m.isActive = '1' order by m.isDomain desc, m.ipDomain");
 			$table .= '<table width="100%">';
 			while($row = mysqli_fetch_array($rs)){
 				$table .= '<tr>';
@@ -115,7 +115,7 @@ if($hostsChanged > 0 && $user['disableEmailNotices']==0){
 			$table .= '<br><br>';
 			$table .= '<hr>';
 			$table .= '<strong>New Clean</strong><br>';
-			$rs = $mysql->runQuery("select m.ipDomain, mg.groupName FROM monitors m inner join monitorGroup mg on mg.id = m.monitorGroupId where m.isBlocked = 0 and m.lastStatusChanged = 1 order by m.isDomain desc, m.ipDomain");
+			$rs = $mysql->runQuery("select m.ipDomain, mg.groupName FROM monitors m inner join monitorGroup mg on mg.id = m.monitorGroupId where m.isBlocked = 0 and m.lastStatusChanged = 1 and m.isActive = '1' order by m.isDomain desc, m.ipDomain");
 			$table .= '<table width="100%">';
 			while($row = mysqli_fetch_array($rs)){
 				$table .= '<tr>';
