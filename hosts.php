@@ -14,6 +14,12 @@ if(Utilities::isLoggedIn()===false){
 	exit();
 }
 
+
+#Function to Enable/Disable IP as well
+$ipDomain = array_key_exists('host', $_POST) ? $_POST['host'] : '';
+$toggle = array_key_exists('toggle', $_POST) ? (int)$_POST['toggle'] : 0;
+#
+
 $titlePreFix = "Hosts";
 
 $user = Utilities::getAccount();
@@ -59,14 +65,31 @@ if($searchS != ''){
 		or rDNS like '%".$mysql->escape($searchS)."%'
 		or status like '%".$mysql->escape($searchS)."%' ) "; 
 }
+
+if($ipDomain != ''){
+	if($toggle==0){
+		$mysql->runQuery("
+			update monitors
+			set isActive = '0'
+			where md5(ipDomain) = '".$mysql->escape($ipDomain)."'");
+	}else{
+		$mysql->runQuery("
+			update monitors
+			set isActive = '1'
+			where md5(ipDomain) = '".$mysql->escape($ipDomain)."'");
+	}
+	exit();
+}
+
 $sql = "
-select m.isBlocked, m.lastUpdate, m.ipDomain, m.lastStatusChangeTime, m.rDNS, m.status, g.groupName, g.id
+select m.isBlocked, m.lastUpdate, m.ipDomain, m.lastStatusChangeTime, m.rDNS, m.status, m.isActive, g.groupName, g.id
 from monitors m 
 	inner join monitorGroup g on g.id = m.monitorGroupId
 where 1=1 $hostTypeSQL $searchSQL
 $orderSQL
 $limitSQL
 ";
+
 
 $rs = $mysql->runQuery($sql);
 
@@ -92,8 +115,41 @@ $(document).ready(function() {
 	$(".hostType").change(function() {
 		$("#reportForm").submit();
 	});
+		$("#blockListTable").tablesorter();
+	$(".blockListLinks").click( function(event) {
+		var host = $("#"+event.target.id).data("host");
+		toggleBlacklist(host);
+		return false;
+	});
 });
+
+function toggleBlacklist(host){
+	var status = $("#"+host).data("blstatus");
+	if(status == 1) {
+		status = 0;
+	}else{
+		status = 1;
+	}
+	$.post("hosts.php", {host: host, toggle: status} )
+		.done(function( data ) {
+			if(status==1){
+				$("#"+host).removeClass('glyphicon-remove');
+				$("#"+host).addClass('glyphicon-ok');
+			}else{
+				$("#"+host).removeClass('glyphicon-ok');
+				$("#"+host).addClass('glyphicon-remove');
+			}
+			$("#"+host).data("blstatus", status);
+		});
+}
 </script>
+
+<div class="panel panel-default">
+	<div class="panel-body">
+		<a class="glyphicon glyphicon-ok"></a> - Enabled<br>
+		<a class="glyphicon glyphicon-remove"></a> - Disabled<br>
+	</div>
+</div>
 
 <script type="text/javascript">
 	google.load("visualization", "1", {packages:["corechart"]});
@@ -168,6 +224,7 @@ $(document).ready(function() {
 	<table id="hostTable" class="tablesorter table table-bordered table-striped">
 		<thead>
 			<tr>
+			    <th style="white-space: nowrap">Status</th>
 				<th style="white-space: nowrap">Host</th>
 				<th>Group</th>
 				<th style="white-space: nowrap">Last Checked</th>
@@ -180,6 +237,13 @@ $(document).ready(function() {
 		<?php
 		while($row = mysqli_fetch_array($rs)){
 			echo('<tr>');
+			echo('<td style="text-align: center;">');
+			if($row['isActive']==0){
+				echo('<a data-blstatus="0" data-host="'.md5($row['ipDomain']).'" id="'.md5($row['ipDomain']).'" class="blockListLinks glyphicon glyphicon-remove" href="#"></a></td>');
+			}else{
+				echo('<a data-blstatus="1" data-host="'.md5($row['ipDomain']).'" id="'.md5($row['ipDomain']).'" class="blockListLinks glyphicon glyphicon-ok" href="#"></a></td>');
+			}
+			
 			echo('<td><a href="hostHistory.php?host='.urlencode($row['ipDomain']).'">'.$row['ipDomain'].'</a></td>');
 			echo('<td><a href="editHostGroup.php?id='.$row['id'].'">'.$row['groupName'].'</a></td>');
 			if('0000-00-00 00:00:00'==$row['lastUpdate']){

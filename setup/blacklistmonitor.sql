@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS `blacklistmonitor` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `blacklistmonitor`;
+-- CREATE DATABASE IF NOT EXISTS `blacklistmonitor` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+-- USE `blacklistmonitor`;
 
 
 DROP TABLE IF EXISTS `blockLists`;
@@ -76,8 +76,8 @@ INSERT INTO `blockLists` (`host`, `monitorType`, `functionCall`, `description`, 
 ('ubl.unsubscore.com', 'ip', 'rbl', 'Lashback''s monitoring for senders failing to provide a working or not honoring an unsubscribe mechanism.', 'http://blacklist.lashback.com/', '0000-00-00 00:00:00', '2', '1', 0, 0, 0, 0),
 ('urired.spameatingmonkey.net', 'domain', 'rbl', 'Domains found in unwanted emails and preemptive technology. Automatically expires after 30 days of inactivity.', 'http://spameatingmonkey.com/', '0000-00-00 00:00:00', '2', '1', 0, 0, 0, 0),
 ('virbl.dnsbl.bit.nl', 'ip', 'rbl', '', '', '0000-00-00 00:00:00', '2', '0', 0, 0, 0, 0),
-('zen.spamhaus.org', 'ip', 'rbl', 'Composite host block list of all spamhaus ips.', 'http://www.spamhaus.org/zen/', '0000-00-00 00:00:00', '3', '1', 0, 0, 0, 0);
-
+('zen.spamhaus.org', 'ip', 'rbl', 'Composite host block list of all spamhaus ips.', 'http://www.spamhaus.org/zen/', '0000-00-00 00:00:00', '3', '1', 0, 0, 0, 0),
+('rbldns.weburl.ro', 'ip', 'rbl', 'rbl.claus.ro', 'https://rbl.claus.ro/login.php', '0000-00-00 00:00:00', '3', '1', '0', '0', '0', '0');
 --
 -- Table structure for table `monitorHistory`
 --
@@ -108,7 +108,8 @@ CREATE TABLE IF NOT EXISTS `monitors` (
   `keepOnUpdate` tinyint(1) NOT NULL DEFAULT '1',
   `lastStatusChangeTime` datetime NOT NULL,
   `rDNS` varchar(200) NOT NULL,
-  `status` text NOT NULL
+  `status` text NOT NULL,
+  `isActive` enum('0','1') NOT NULL DEFAULT '1' COMMENT '0=inactive;1=active'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

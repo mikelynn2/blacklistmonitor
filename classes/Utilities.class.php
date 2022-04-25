@@ -472,7 +472,7 @@ class Utilities {
 	 }
 
 	public static function getNextMonitor($mysql){
-		$ipDomain = $mysql->runQueryReturnVar("select ipDomain from monitors where beenChecked = 0");
+		$ipDomain = $mysql->runQueryReturnVar("select ipDomain from monitors where beenChecked = 0 AND isActive = '1'");
 		$mysql->runQuery("update monitors set beenChecked = 1 where ipDomain = '".$mysql->escape($ipDomain)."'");
 		return $ipDomain;
 	}
@@ -481,7 +481,7 @@ class Utilities {
 		$sql = '';
 		$monitorGroupId = (int)$monitorGroupId;
 		if($monitorGroupId > 0) $sql = " and monitorGroupId = $monitorGroupId";
-		return $mysql->runQueryReturnVar("select COALESCE(count(ipDomain),0) as cnt from monitors where lastStatusChanged = 1 $sql");
+		return $mysql->runQueryReturnVar("select COALESCE(count(ipDomain),0) as cnt from monitors where lastStatusChanged = 1 and isActive = '1' $sql");
 	}
 
 	public static function getHostErrorCount($mysql, $monitorGroupId = 0, $onlyNew = false) {
@@ -489,7 +489,7 @@ class Utilities {
 		$monitorGroupId = (int)$monitorGroupId;
 		if($monitorGroupId > 0) $sql = " and monitorGroupId = $monitorGroupId";
 		if($onlyNew) $sql .= " and lastStatusChanged = 1 ";
-		return $mysql->runQueryReturnVar("select COALESCE(count(ipDomain),0) as cnt from monitors where isBlocked = 1 $sql");
+		return $mysql->runQueryReturnVar("select COALESCE(count(ipDomain),0) as cnt from monitors where isBlocked = 1 and isActive = '1' $sql");
 	}
 
 	public static function getHostCleanCount($mysql, $monitorGroupId = 0, $onlyNew = false) {
@@ -497,7 +497,7 @@ class Utilities {
 		$monitorGroupId = (int)$monitorGroupId;
 		if($monitorGroupId > 0) $sql = " and monitorGroupId = $monitorGroupId";
 		if($onlyNew) $sql .= " and lastStatusChanged = 1 ";
-		return $mysql->runQueryReturnVar("select COALESCE(count(ipDomain),0) as cnt from monitors where isBlocked = 0 $sql");
+		return $mysql->runQueryReturnVar("select COALESCE(count(ipDomain),0) as cnt from monitors where isBlocked = 0 and isActive = '1' $sql");
 	}
 
 	public static function getHostCount($mysql, $monitorGroupId = 0) {
